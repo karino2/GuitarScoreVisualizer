@@ -3,6 +3,9 @@ package com.livejournal.karino2.guitarscorevisualizer;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 
 /**
@@ -23,6 +26,8 @@ import android.support.v4.app.FragmentActivity;
  */
 public class ScoreListActivity extends FragmentActivity
         implements ScoreListFragment.Callbacks {
+
+    final int ACTIVITY_ID_EDIT = 1;
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -50,6 +55,45 @@ public class ScoreListActivity extends FragmentActivity
         }
 
         // TODO: If exposing deep links into your app, handle intents here.
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.score_list, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.action_new:
+                startEditActivity();
+                return true;
+            case R.id.action_recreate:
+                Database.getInstance(this).recreate();
+                reload();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void reload() {
+        getLoaderManager().getLoader(0).forceLoad();
+    }
+
+    private void startEditActivity() {
+        Intent intent = new Intent(this, EditActivity.class);
+        startActivityForResult(intent, ACTIVITY_ID_EDIT);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch(requestCode) {
+            case ACTIVITY_ID_EDIT:
+                reload();
+                return;
+        }
     }
 
     /**

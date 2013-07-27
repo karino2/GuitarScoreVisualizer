@@ -7,8 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.livejournal.karino2.guitarscorevisualizer.dummy.DummyContent;
-
 /**
  * A fragment representing a single Score detail screen.
  * This fragment is either contained in a {@link ScoreListActivity}
@@ -25,7 +23,7 @@ public class ScoreDetailFragment extends Fragment {
     /**
      * The dummy content this fragment is presenting.
      */
-    private DummyContent.DummyItem mItem;
+    private Score mItem;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -39,10 +37,7 @@ public class ScoreDetailFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         if (getArguments().containsKey(ARG_ITEM_ID)) {
-            // Load the dummy content specified by the fragment
-            // arguments. In a real-world scenario, use a Loader
-            // to load content from a content provider.
-            mItem = DummyContent.ITEM_MAP.get(getArguments().getString(ARG_ITEM_ID));
+            mItem = Database.getInstance(getActivity()).getScoreById(getArguments().getString(ARG_ITEM_ID));
         }
     }
 
@@ -53,7 +48,8 @@ public class ScoreDetailFragment extends Fragment {
 
         // Show the dummy content as text in a TextView.
         if (mItem != null) {
-            ((TextView) rootView.findViewById(R.id.score_detail)).setText(mItem.content);
+            ((TextView) rootView.findViewById(R.id.score_detail_title)).setText(mItem.getTitle());
+            ((TextView) rootView.findViewById(R.id.score_detail_score)).setText(mItem.getEncodedTexts());
         }
 
         return rootView;

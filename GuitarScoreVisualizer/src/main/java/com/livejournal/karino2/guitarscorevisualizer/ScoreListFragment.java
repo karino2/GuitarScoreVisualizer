@@ -1,13 +1,20 @@
 package com.livejournal.karino2.guitarscorevisualizer;
 
 import android.app.Activity;
+import android.content.Context;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 
-import com.livejournal.karino2.guitarscorevisualizer.dummy.DummyContent;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * A list fragment representing a list of Scores. This fragment
@@ -18,13 +25,16 @@ import com.livejournal.karino2.guitarscorevisualizer.dummy.DummyContent;
  * Activities containing this fragment MUST implement the {@link Callbacks}
  * interface.
  */
-public class ScoreListFragment extends ListFragment {
+public class ScoreListFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     /**
      * The serialization (saved instance state) Bundle key representing the
      * activated item position. Only used on tablets.
      */
     private static final String STATE_ACTIVATED_POSITION = "activated_position";
+
+    Database getDatabase(Context ctx) { return Database.getInstance(ctx); }
+
 
     /**
      * The fragment's current callback object, which is notified of list item
@@ -37,6 +47,32 @@ public class ScoreListFragment extends ListFragment {
      */
     private int mActivatedPosition = ListView.INVALID_POSITION;
 
+    @Override
+    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
+        SimpleCursorLoader loader;
+        return new SimpleCursorLoader(getActivity()) {
+
+            @Override
+            public Cursor loadInBackground() {
+                Cursor cursor = getDatabase(getContext()).getScoreInfos();
+                if(cursor!=null){
+                    cursor.getCount();
+                }
+                return cursor;
+            }
+        };
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
+        adapter.swapCursor(cursor);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> cursorLoader) {
+        adapter.swapCursor(null);
+    }
+
     /**
      * A callback interface that all activities containing this fragment must
      * implement. This mechanism allows activities to be notified of item
@@ -46,7 +82,7 @@ public class ScoreListFragment extends ListFragment {
         /**
          * Callback for when an item has been selected.
          */
-        public void onItemSelected(String id);
+        public void onItemSelected(long id);
     }
 
     /**
@@ -55,7 +91,7 @@ public class ScoreListFragment extends ListFragment {
      */
     private static Callbacks sDummyCallbacks = new Callbacks() {
         @Override
-        public void onItemSelected(String id) {
+        public void onItemSelected(long id) {
         }
     };
 
@@ -66,16 +102,31 @@ public class ScoreListFragment extends ListFragment {
     public ScoreListFragment() {
     }
 
+
+    SimpleCursorAdapter adapter;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // TODO: replace with a real list adapter.
-        setListAdapter(new ArrayAdapter<DummyContent.DummyItem>(
-                getActivity(),
-                android.R.layout.simple_list_item_activated_1,
-                android.R.id.text1,
-                DummyContent.ITEMS));
+
+        adapter = new SimpleCursorAdapter(getActivity(), R.layout.score_list_item, null, new String[]{"DATE", "TITLE"}, new int[]{R.id.textViewDate, R.id.textViewSubject}, 0);
+        adapter.setViewBinder(new SimpleCursorAdapter.ViewBinder(){
+
+            public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
+                if(columnIndex == 1)
+                {
+                    TextView tv = (TextView)view;
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+                    tv.setText(sdf.format(new Date(cursor.getLong(columnIndex))));
+                    return true;
+                }
+                return false;
+            }});
+
+
+        setListAdapter(adapter);
+        getLoaderManager().initLoader(0, null, this);
     }
 
     @Override
@@ -115,7 +166,7 @@ public class ScoreListFragment extends ListFragment {
 
         // Notify the active callbacks interface (the activity, if the
         // fragment is attached to one) that an item has been selected.
-        mCallbacks.onItemSelected(DummyContent.ITEMS.get(position).id);
+        mCallbacks.onItemSelected(id);
     }
 
     @Override
