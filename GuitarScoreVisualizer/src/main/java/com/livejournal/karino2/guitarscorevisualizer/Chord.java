@@ -17,6 +17,10 @@ public class Chord {
     public static final int BASE_A_SHARP = 11;
     public static final int BASE_B = 12;
 
+    // I treat frac code as special base
+    public static final int BASE_Cm_ON_G = 13;
+
+
     public static final int MODIFIER_MAJOR = 1;
     public static final int MODIFIER_MINOR = 2;
     public static final int MODIFIER_MINORSEVENS = 3;

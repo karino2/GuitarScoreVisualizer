@@ -22,7 +22,33 @@ public class ScoreParser {
 
     public static class MatchResult {
         public int patternIndex;
-        public Matcher matcher;
+        public int start;
+        public int end;
+    }
+
+    public List<Chord> parseOneLine(String line) {
+        List<MatchResult> mrs = parseOneLineForMatches(line);
+        return matchResultListToChordList(mrs);
+    }
+
+    List<Chord> matchResultListToChordList(List<MatchResult> matches) {
+        ArrayList<Chord> res = new ArrayList<Chord>();
+        for(MatchResult match : matches) {
+            res.add(matchResultToChord(match));
+        }
+        return res;
+    }
+
+    Chord matchResultToChord(MatchResult match) {
+        switch(match.patternIndex) {
+            case 0:
+                return new Chord(Chord.BASE_Cm_ON_G, Chord.MODIFIER_MAJOR);
+            case 1:
+                return new Chord(Chord.BASE_C, Chord.MODIFIER_MAJOR);
+            case 2:
+                return new Chord(Chord.BASE_G, Chord.MODIFIER_MAJOR);
+        }
+        throw new IllegalArgumentException();
     }
 
     public List<MatchResult> parseOneLineForMatches(String line) {
@@ -30,17 +56,20 @@ public class ScoreParser {
         for(int i = 0; i < chordsPat.size(); i++) {
             Pattern pat = chordsPat.get(i);
             Matcher matcher = pat.matcher(line);
-            if(matcher.find()) {
+            int from = 0;
+            while(matcher.find(from)) {
                 MatchResult mr = new MatchResult();
                 mr.patternIndex = i;
-                mr.matcher = matcher;
+                mr.start = matcher.start(1);
+                mr.end = matcher.end(1);
                 res.add(mr);
+                from = matcher.end(1)+1;
             }
         }
         Collections.sort(res, new Comparator<MatchResult>() {
             @Override
             public int compare(MatchResult matchResult, MatchResult matchResult2) {
-                return matchResult.matcher.start(1) - matchResult2.matcher.start(1);
+                return matchResult.start - matchResult2.start;
             }
         });
         return res;
