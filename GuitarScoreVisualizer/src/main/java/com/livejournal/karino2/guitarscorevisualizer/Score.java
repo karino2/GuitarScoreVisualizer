@@ -39,7 +39,7 @@ public class Score {
         int pos = 0;
         int index = inTexts.indexOf('\n', pos);
         while(index != -1) {
-            texts.add(inTexts.substring(pos, index-pos));
+            texts.add(inTexts.substring(pos, index));
             pos = index+1;
             index = inTexts.indexOf('\n', pos);
         }

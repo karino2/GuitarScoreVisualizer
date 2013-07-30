@@ -16,10 +16,17 @@
               android:id="@+id/score_detail_score"
               style="?android:attr/textAppearanceLarge"
               android:layout_width="match_parent"
-              android:layout_height="match_parent"
+              android:layout_height="wrap_content"
+              android:minHeight="200dp"
               android:padding="16dp"
               android:textIsSelectable="true"
               tools:context=".ScoreDetailFragment"/>
+    <TableLayout
+            android:id="@+id/tableChords"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+    </TableLayout>
 
 </LinearLayout>
 

@@ -16,7 +16,7 @@ public class Database {
     private static final int DATABASE_VERSION = 1;
     private static final String SCORE_TABLE_NAME = "score";
 
-    public Score getScoreById(String id) {
+    public Score getScoreById(long id) {
         Cursor cursor = database.query(SCORE_TABLE_NAME, new String[] {"_id", "DATE", "TITLE", "SCORE", "CHORDLIST"}, "_id = ?", new String[] { String.valueOf(id) }, null, null, null);
         cursor.moveToFirst();
         Score score = new Score(cursor.getLong(0), new Date(cursor.getLong(1)), cursor.getString(2), cursor.getString(3));
@@ -87,7 +87,7 @@ public class Database {
     }
 
     public Cursor getScoreInfos() {
-        return database.query(SCORE_TABLE_NAME, new String[] {"_id", "DATE", "TITLE"}, null, null, null, null, "DATE DESC, _id DESC");
+        return database.query(SCORE_TABLE_NAME, new String[] {"_id", "DATE", "TITLE", "SCORE"}, null, null, null, null, "DATE DESC, _id DESC");
     }
 
     public void insertScore(Score score) {

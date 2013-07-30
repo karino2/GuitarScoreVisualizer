@@ -1,6 +1,7 @@
 package com.livejournal.karino2.guitarscorevisualizer;
 
 import android.content.Intent;
+import android.content.Loader;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
@@ -79,7 +80,9 @@ public class ScoreListActivity extends FragmentActivity
     }
 
     private void reload() {
-        getLoaderManager().getLoader(0).forceLoad();
+        Loader<Object> loader = getLoaderManager().getLoader(0);
+        if(loader != null)
+            loader.forceLoad();
     }
 
     private void startEditActivity() {
@@ -101,13 +104,13 @@ public class ScoreListActivity extends FragmentActivity
      * indicating that the item with the given ID was selected.
      */
     @Override
-    public void onItemSelected(String id) {
+    public void onItemSelected(long id) {
         if (mTwoPane) {
             // In two-pane mode, show the detail view in this activity by
             // adding or replacing the detail fragment using a
             // fragment transaction.
             Bundle arguments = new Bundle();
-            arguments.putString(ScoreDetailFragment.ARG_ITEM_ID, id);
+            arguments.putLong(ScoreDetailFragment.ARG_ITEM_ID, id);
             ScoreDetailFragment fragment = new ScoreDetailFragment();
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()

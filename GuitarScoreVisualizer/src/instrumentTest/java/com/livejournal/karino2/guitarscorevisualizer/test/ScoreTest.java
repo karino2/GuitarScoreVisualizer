@@ -21,10 +21,12 @@ public class ScoreTest extends TestCase {
     }
 
     public void testDecodeTexts() {
-        Score score = new Score(new Date(), "Test title", "Hello\nWorld");
+        Score score = new Score(new Date(), "Test title", "Hello\nWorld\nThird\n");
         List<String> texts = score.getTexts();
-        assertEquals(2, texts.size());
+        assertEquals(4, texts.size());
         assertEquals("Hello", texts.get(0));
         assertEquals("World", texts.get(1));
+        assertEquals("Third", texts.get(2));
+        assertEquals("", texts.get(3));
     }
 }

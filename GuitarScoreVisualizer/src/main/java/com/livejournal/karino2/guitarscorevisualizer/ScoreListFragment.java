@@ -110,7 +110,7 @@ public class ScoreListFragment extends ListFragment implements LoaderManager.Loa
         super.onCreate(savedInstanceState);
 
 
-        adapter = new SimpleCursorAdapter(getActivity(), R.layout.score_list_item, null, new String[]{"DATE", "TITLE"}, new int[]{R.id.textViewDate, R.id.textViewSubject}, 0);
+        adapter = new SimpleCursorAdapter(getActivity(), R.layout.score_list_item, null, new String[]{"DATE", "TITLE", "SCORE"}, new int[]{R.id.textViewDate, R.id.textViewSubject, R.id.textViewScore}, 0);
         adapter.setViewBinder(new SimpleCursorAdapter.ViewBinder(){
 
             public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
@@ -119,6 +119,7 @@ public class ScoreListFragment extends ListFragment implements LoaderManager.Loa
                     TextView tv = (TextView)view;
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
                     tv.setText(sdf.format(new Date(cursor.getLong(columnIndex))));
+                    tv.setTag(cursor.getLong(0)); // ID
                     return true;
                 }
                 return false;
@@ -166,7 +167,7 @@ public class ScoreListFragment extends ListFragment implements LoaderManager.Loa
 
         // Notify the active callbacks interface (the activity, if the
         // fragment is attached to one) that an item has been selected.
-        mCallbacks.onItemSelected(id);
+        mCallbacks.onItemSelected((Long)view.findViewById(R.id.textViewDate).getTag());
     }
 
     @Override

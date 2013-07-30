@@ -38,8 +38,8 @@ public class ScoreDetailActivity extends FragmentActivity {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
             Bundle arguments = new Bundle();
-            arguments.putString(ScoreDetailFragment.ARG_ITEM_ID,
-                    getIntent().getStringExtra(ScoreDetailFragment.ARG_ITEM_ID));
+            arguments.putLong(ScoreDetailFragment.ARG_ITEM_ID,
+                    getIntent().getLongExtra(ScoreDetailFragment.ARG_ITEM_ID, -1));
             ScoreDetailFragment fragment = new ScoreDetailFragment();
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()
