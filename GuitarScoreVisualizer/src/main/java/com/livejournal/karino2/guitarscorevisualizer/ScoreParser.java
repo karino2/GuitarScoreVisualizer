@@ -11,11 +11,11 @@ import java.util.regex.Pattern;
  * Created by karino on 7/30/13.
  */
 public class ScoreParser {
-    String[] chordsPatText = {"Cm/G", "C", "G"};
     List<Pattern> chordsPat = new ArrayList<Pattern>();
 
+
     public ScoreParser() {
-        for(String txtPat : chordsPatText) {
+        for(String txtPat : Chord.chordsText()) {
             chordsPat.add(Pattern.compile("[ \\|](" + txtPat+ ")[ \\|]"));
         }
     }
@@ -40,15 +40,7 @@ public class ScoreParser {
     }
 
     Chord matchResultToChord(MatchResult match) {
-        switch(match.patternIndex) {
-            case 0:
-                return new Chord(Chord.BASE_Cm_ON_G, Chord.MODIFIER_MAJOR);
-            case 1:
-                return new Chord(Chord.BASE_C, Chord.MODIFIER_MAJOR);
-            case 2:
-                return new Chord(Chord.BASE_G, Chord.MODIFIER_MAJOR);
-        }
-        throw new IllegalArgumentException();
+        return Chord.patIndexToChord(match.patternIndex);
     }
 
     public List<MatchResult> parseOneLineForMatches(String line) {

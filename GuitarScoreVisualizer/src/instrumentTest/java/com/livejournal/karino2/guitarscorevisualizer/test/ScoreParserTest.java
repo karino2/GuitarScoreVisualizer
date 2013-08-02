@@ -1,5 +1,7 @@
 package com.livejournal.karino2.guitarscorevisualizer.test;
 
+import android.util.Log;
+
 import com.livejournal.karino2.guitarscorevisualizer.Chord;
 import com.livejournal.karino2.guitarscorevisualizer.ScoreParser;
 
@@ -112,5 +114,39 @@ public class ScoreParserTest extends TestCase {
         List<Chord> res = parseOneLine("|Cm/G G|C|");
         assertEquals(3, res.size());
         assertEquals(new Chord(Chord.BASE_Cm_ON_G, Chord.MODIFIER_MAJOR), res.get(0));
+    }
+
+    public void testMakeChordText() {
+        veryMakeChordText(Chord.BASE_C, Chord.MODIFIER_MAJOR, "C");
+        veryMakeChordText(Chord.BASE_C, Chord.MODIFIER_MINORSEVEN_FLATFIVE, "Cm7-5");
+        veryMakeChordText(Chord.BASE_C, Chord.MODIFIER_MINOR_MAJORSEVENS, "CmM7");
+        veryMakeChordText(Chord.BASE_C_SHARP, Chord.MODIFIER_MAJOR, "C#");
+        veryMakeChordText(Chord.BASE_B, Chord.MODIFIER_MINOR_MAJORSEVENS, "BmM7");
+    }
+
+    private void veryMakeChordText(int baseIndex, int modIndex, String expect) {
+        String res = Chord.makeChordText(baseIndex, modIndex);
+        assertEquals(expect, res);
+    }
+
+    public void testPatIndexToChord_C() {
+        // 0 C
+        // 1 Cm
+        // 2 Cm7
+        // 0+MODIFIER_NUM-1 CmM7
+        // 1*MODIFIER_NUM+0 C#
+        // 1*MODIFIER_NUM+1 C#m
+
+        verifyPatIndexToChord(new Chord(Chord.BASE_C, Chord.MODIFIER_MAJOR), 0);
+        verifyPatIndexToChord(new Chord(Chord.BASE_C, Chord.MODIFIER_MINOR), 1);
+        verifyPatIndexToChord(new Chord(Chord.BASE_C, Chord.MODIFIER_MINOR_MAJORSEVENS), Chord.MODIFIER_NUM-1);
+        verifyPatIndexToChord(new Chord(Chord.BASE_C_SHARP, Chord.MODIFIER_MAJOR), Chord.MODIFIER_NUM);
+        verifyPatIndexToChord(new Chord(Chord.BASE_B, Chord.MODIFIER_MINOR_MAJORSEVENS), Chord.BASE_NUM*Chord.MODIFIER_NUM-1);
+        verifyPatIndexToChord(new Chord(Chord.BASE_Cm_ON_G, Chord.MODIFIER_MAJOR), Chord.BASE_NUM*Chord.MODIFIER_NUM);
+    }
+
+    private void verifyPatIndexToChord(Chord expect, int inputPatIndex) {
+        Chord actual = Chord.patIndexToChord(inputPatIndex);
+        assertEquals(expect, actual);
     }
 }
