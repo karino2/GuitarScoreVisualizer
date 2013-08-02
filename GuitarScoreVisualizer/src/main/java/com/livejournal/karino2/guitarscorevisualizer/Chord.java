@@ -77,6 +77,15 @@ public class Chord {
         return chords;
     }
 
+    public int encodeToInt() {
+        return 0x100*modifier+baseTone;
+    }
+
+    public static Chord decodeInt(int encodedInt) {
+        int base = encodedInt & 0xff;
+        int mod = (0xff00&encodedInt)/0x100;
+        return new Chord(base, mod);
+    }
 
 
     int baseTone;

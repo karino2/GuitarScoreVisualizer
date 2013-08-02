@@ -1,5 +1,7 @@
 package com.livejournal.karino2.guitarscorevisualizer;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -16,8 +18,22 @@ public class ScoreParser {
 
     public ScoreParser() {
         for(String txtPat : Chord.chordsText()) {
-            chordsPat.add(Pattern.compile("[ \\|](" + txtPat+ ")[ \\|]"));
+            chordsPat.add(Pattern.compile("[(\\uFF5C \\|](" + txtPat+ ")[\\uFF5C \\|]"));
         }
+    }
+
+    public List<Chord> parseAll(List<String> texts) {
+        ArrayList<Chord> res = new ArrayList<Chord>();
+        for(String line : texts) {
+            if(line.length() > 4) {
+                char charAt = line.charAt(3);
+                int code = line.codePointAt(3);
+                Log.d("GSV", "charAt=" + charAt + ", code=" + code);
+            }
+            List<Chord> oneRes = parseOneLine(line);
+            res.addAll(oneRes);
+        }
+        return res;
     }
 
     public static class MatchResult {

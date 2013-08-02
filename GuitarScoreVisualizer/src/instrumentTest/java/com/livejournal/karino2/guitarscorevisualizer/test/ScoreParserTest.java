@@ -3,10 +3,12 @@ package com.livejournal.karino2.guitarscorevisualizer.test;
 import android.util.Log;
 
 import com.livejournal.karino2.guitarscorevisualizer.Chord;
+import com.livejournal.karino2.guitarscorevisualizer.ScoreDetailFragment;
 import com.livejournal.karino2.guitarscorevisualizer.ScoreParser;
 
 import junit.framework.TestCase;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -116,6 +118,12 @@ public class ScoreParserTest extends TestCase {
         assertEquals(new Chord(Chord.BASE_Cm_ON_G, Chord.MODIFIER_MAJOR), res.get(0));
     }
 
+    public void testParseOneLine_RealData() {
+        // List<Chord> res = parseOneLine("[3]｜Em｜A7｜Am7 Bm7｜Cm D｜");
+        List<Chord> res = parseOneLine("[3]\uFF5CEm\uFF5CA7\uFF5CAm7 Bm7\uFF5CCm D\uFF5C");
+        assertEquals(6, res.size());
+    }
+
     public void testMakeChordText() {
         veryMakeChordText(Chord.BASE_C, Chord.MODIFIER_MAJOR, "C");
         veryMakeChordText(Chord.BASE_C, Chord.MODIFIER_MINORSEVEN_FLATFIVE, "Cm7-5");
@@ -148,5 +156,37 @@ public class ScoreParserTest extends TestCase {
     private void verifyPatIndexToChord(Chord expect, int inputPatIndex) {
         Chord actual = Chord.patIndexToChord(inputPatIndex);
         assertEquals(expect, actual);
+    }
+
+    public void testChordEncodeDecodeInt() {
+        verifyEncodeDecode(Chord.BASE_C, Chord.MODIFIER_MAJOR);
+        verifyEncodeDecode(Chord.BASE_B, Chord.MODIFIER_AUG);
+        verifyEncodeDecode(Chord.BASE_B, Chord.MODIFIER_MINOR_MAJORSEVENS);
+        verifyEncodeDecode(Chord.BASE_Cm_ON_G, Chord.MODIFIER_MAJOR);
+    }
+
+    private void verifyEncodeDecode(int base, int mod) {
+        Chord chord = new Chord(base, mod);
+        Chord actual = Chord.decodeInt(chord.encodeToInt());
+        assertEquals(chord, actual);
+    }
+
+    public void testUniqueChordIterator() {
+        ArrayList<Chord> chords = new ArrayList<Chord>();
+        chords.add(new Chord(Chord.BASE_C, Chord.MODIFIER_MAJOR));
+        chords.add(new Chord(Chord.BASE_G, Chord.MODIFIER_MAJOR));
+        chords.add(new Chord(Chord.BASE_C, Chord.MODIFIER_MAJOR));
+        chords.add(new Chord(Chord.BASE_G, Chord.MODIFIER_MAJOR));
+        chords.add(new Chord(Chord.BASE_C, Chord.MODIFIER_MINOR));
+
+        ScoreDetailFragment.UniqueChordIterator iterator = new ScoreDetailFragment.UniqueChordIterator(chords);
+        assertTrue(iterator.hasNext());
+        assertEquals(new Chord(Chord.BASE_C, Chord.MODIFIER_MAJOR), iterator.next());
+        assertTrue(iterator.hasNext());
+        assertEquals(new Chord(Chord.BASE_G, Chord.MODIFIER_MAJOR), iterator.next());
+        assertTrue(iterator.hasNext());
+        assertEquals(new Chord(Chord.BASE_C, Chord.MODIFIER_MINOR), iterator.next());
+        assertFalse(iterator.hasNext());
+
     }
 }

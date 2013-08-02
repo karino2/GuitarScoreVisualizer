@@ -91,11 +91,21 @@ public class Database {
     }
 
     public void insertScore(Score score) {
+        ContentValues values = toContentValues(score);
+        database.insert(SCORE_TABLE_NAME, null, values);
+    }
+
+    public void updateScore(Score score) {
+        ContentValues values = toContentValues(score);
+        database.update(SCORE_TABLE_NAME, values, "_id=?", new String[]{String.valueOf(score.getId())});
+    }
+
+    private ContentValues toContentValues(Score score) {
         ContentValues values = new ContentValues();
         values.put("DATE", score.getCreated().getTime());
         values.put("TITLE", score.getTitle());
         values.put("SCORE", score.getEncodedTexts());
         values.put("CHORDLIST", score.getEncodedChordList());
-        database.insert(SCORE_TABLE_NAME, null, values);
+        return values;
     }
 }
