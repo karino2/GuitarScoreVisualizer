@@ -74,7 +74,7 @@ public class ScoreDetailFragment extends Fragment {
         float dpi = (metrics.xdpi + metrics.ydpi) / 2;
         if (dpi < 10) dpi = 10;
 
-        float imageWidthCm = 0.85f;
+        float imageWidthCm = 0.9f;
         CHORD_IMAGE_WIDTH =  (int)(dpi * imageWidthCm / 2.54f) + 1;
     }
 
@@ -250,7 +250,7 @@ public class ScoreDetailFragment extends Fragment {
         return R.drawable.chords_notready;
     }
 
-    final int CELL_MARGIN = 40;
+    final int CELL_MARGIN = 20;
 
     boolean tableLayoutReady = false;
     private void formatTableIfReady() {
@@ -267,6 +267,7 @@ public class ScoreDetailFragment extends Fragment {
         int addedWidth = 0;
         for(Chord chord: wrapper) {
             ImageButton image = new ImageButton(getActivity());
+            image.setPadding(10, 10, 10, 10);
             setChordResource(image, lookupResourceId(chord));
             row.addView(image, new TableRow.LayoutParams(0));
             addedWidth += CHORD_IMAGE_WIDTH+CELL_MARGIN;
