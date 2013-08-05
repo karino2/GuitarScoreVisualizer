@@ -113,42 +113,6 @@ public class ScoreListFragment extends ListFragment implements LoaderManager.Loa
 
     SimpleCursorAdapter adapter;
 
-    /*
-    class ItemContextualActionCallback implements ActionMode.Callback {
-        long itemId;
-        ItemContextualActionCallback(long id) {
-            itemId = id;
-        }
-
-        @Override
-        public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
-            MenuInflater inflater = actionMode.getMenuInflater();
-            inflater.inflate(R.menu.list_context, menu);
-            return true;
-        }
-
-        @Override
-        public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
-            return false;
-        }
-
-        @Override
-        public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
-            switch(menuItem.getItemId()) {
-                case R.id.list_context_delete_item:
-                    getDatabase(getActivity()).deleteScore(itemId);
-                    reloadCursor();
-                    return true;
-            }
-            return false;
-        }
-
-        @Override
-        public void onDestroyActionMode(ActionMode aMode) {
-            actionMode = null;
-        }
-    }
-    */
 
     public void reloadCursor() {
         Loader<Object> loader = getLoaderManager().getLoader(0);
@@ -182,8 +146,6 @@ public class ScoreListFragment extends ListFragment implements LoaderManager.Loa
         getLoaderManager().initLoader(0, null, this);
 
     }
-
-    // ActionMode actionMode;
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -227,19 +189,6 @@ public class ScoreListFragment extends ListFragment implements LoaderManager.Loa
 
             }
         });
-
-        /*
-        getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long id) {
-                if(actionMode != null)
-                    return false;
-                actionMode = getActivity().startActionMode(new ItemContextualActionCallback(id));
-                view.setSelected(true);
-                return true;
-            }
-        });
-        */
 
         // Restore the previously serialized activated item position.
         if (savedInstanceState != null
