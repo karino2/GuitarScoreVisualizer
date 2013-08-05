@@ -59,6 +59,22 @@ public class ScoreListActivity extends FragmentActivity
     }
 
     @Override
+    public void onBackPressed() {
+        if(doProcessBack()) {
+            return;
+        }
+        super.onBackPressed();
+    }
+
+    private boolean doProcessBack() {
+        if(mTwoPane) {
+            return ((ScoreDetailFragment) getSupportFragmentManager()
+                    .findFragmentById(R.id.score_detail_container)).doBackProcess();
+        }
+        return false;
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.score_list, menu);

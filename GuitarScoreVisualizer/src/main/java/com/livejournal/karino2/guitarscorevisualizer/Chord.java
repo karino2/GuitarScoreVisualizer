@@ -81,21 +81,30 @@ public class Chord {
     }
 
     public int encodeToInt() {
-        return 0x100*modifier+baseTone;
+        return 0x10000*alternate+0x100*modifier+baseTone;
     }
 
     public static Chord decodeInt(int encodedInt) {
         int base = encodedInt & 0xff;
         int mod = (0xff00&encodedInt)/0x100;
-        return new Chord(base, mod);
+        int alternate = encodedInt/0x10000;
+        return new Chord(base, mod, alternate);
     }
 
 
     int baseTone;
     int modifier;
-    public Chord(int baseVal, int modVal) {
+    int alternate;
+
+    final static int ALTERNATE_HICODE = 1;
+    public Chord(int baseVal, int modVal, int alternate) {
         baseTone = baseVal;
         modifier = modVal;
+        this.alternate = alternate;
+    }
+
+    public Chord(int baseVal, int modVal) {
+        this(baseVal, modVal, 0);
     }
 
     public int getBase() {
@@ -106,6 +115,11 @@ public class Chord {
         return modifier;
     }
 
+    // hicode, power code, etc.
+    public int getAlternate() {
+        return alternate;
+    }
+
     @Override
     public boolean equals(Object ob) {
         if (ob == null) return false;
@@ -113,12 +127,13 @@ public class Chord {
         Chord that = (Chord)ob;
 
         return getBase() == that.getBase() &&
-                getModifier() == that.getModifier();
+                getModifier() == that.getModifier() &&
+                getAlternate() == that.getAlternate();
     }
 
     @Override
     public int hashCode() {
-        return ((Integer)getBase()).hashCode() ^ ((Integer)getModifier()).hashCode();
+        return ((Integer)encodeToInt()).hashCode();
     }
 
 }

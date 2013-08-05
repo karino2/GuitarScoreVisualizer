@@ -49,6 +49,15 @@ public class ScoreDetailActivity extends FragmentActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        if(((ScoreDetailFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.score_detail_container)).doBackProcess())
+            return;
+        super.onBackPressed();
+
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:

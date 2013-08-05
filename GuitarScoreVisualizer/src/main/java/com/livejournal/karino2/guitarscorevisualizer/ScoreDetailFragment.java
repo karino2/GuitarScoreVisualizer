@@ -3,18 +3,21 @@ package com.livejournal.karino2.guitarscorevisualizer;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -128,6 +131,20 @@ public class ScoreDetailFragment extends Fragment {
             startParseChord();
         }
 
+        ((TextView)rootView.findViewById(R.id.score_detail_score)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dismissPopupIfShown();
+            }
+        });
+        ((TextView)rootView.findViewById(R.id.score_detail_score)).setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                dismissPopupIfShown();
+            }
+        });
+
+
         return rootView;
     }
 
@@ -224,6 +241,7 @@ public class ScoreDetailFragment extends Fragment {
         }
     }
 
+    HashMap<Chord, List<Chord>> alternateChordMap;
     HashMap<Chord, Integer> chordResourceMap;
     int lookupResourceId(Chord chord) {
         if(chordResourceMap == null) {
@@ -247,6 +265,17 @@ public class ScoreDetailFragment extends Fragment {
             chordResourceMap.put(new Chord(Chord.BASE_E, Chord.MODIFIER_MINOR), R.drawable.chords_em_0);
             chordResourceMap.put(new Chord(Chord.BASE_G, Chord.MODIFIER_MAJOR), R.drawable.chords_g_0);
             chordResourceMap.put(new Chord(Chord.BASE_G_SHARP, Chord.MODIFIER_MAJOR), R.drawable.chords_gsh_0);
+            chordResourceMap.put(new Chord(Chord.BASE_G, Chord.MODIFIER_MAJOR, Chord.ALTERNATE_HICODE), R.drawable.chords_g_1);
+
+
+            alternateChordMap = new HashMap<Chord, List<Chord>>();
+
+            ArrayList<Chord> gAltList = new ArrayList<Chord>();
+            gAltList.add(new Chord(Chord.BASE_G, Chord.MODIFIER_MAJOR));
+            gAltList.add(new Chord(Chord.BASE_G, Chord.MODIFIER_MAJOR, Chord.ALTERNATE_HICODE));
+            alternateChordMap.put(new Chord(Chord.BASE_G, Chord.MODIFIER_MAJOR), gAltList);
+            alternateChordMap.put(new Chord(Chord.BASE_G, Chord.MODIFIER_MAJOR, Chord.ALTERNATE_HICODE), gAltList);
+
         }
         if(chordResourceMap.containsKey(chord))
             return chordResourceMap.get(chord);
@@ -271,9 +300,16 @@ public class ScoreDetailFragment extends Fragment {
         for(Chord chord: wrapper) {
             ImageButton image = new ImageButton(getActivity());
             image.setPadding(10, 10, 10, 10);
+            image.setTag(chord);
+            image.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    showAlternateIfExist(view, (Chord)view.getTag());
+                }
+            });
             setChordResource(image, lookupResourceId(chord));
             row.addView(image, new TableRow.LayoutParams(0));
-            addedWidth += CHORD_IMAGE_WIDTH+CELL_MARGIN;
+            addedWidth += getButtonSize();
             if(addedWidth +CHORD_IMAGE_WIDTH+CELL_MARGIN > tableWidth) {
                 row = new TableRow(getActivity());
                 tl.addView(row, new TableLayout.LayoutParams());
@@ -282,46 +318,80 @@ public class ScoreDetailFragment extends Fragment {
         }
 
 
-        /*
-        Log.d("GScoreV", "rootWidth:" + tableWidth + ", tableWidth: " + tl.getWidth());
+    }
 
-        TableRow row = new TableRow(getActivity());
-        ImageButton image = new ImageButton(getActivity());
-        image.setImageResource(R.drawable.chords_a_0);
+    Chord chordForDialog;
+    PopupWindow popupForAlts;
 
-        row.addView(image, new TableRow.LayoutParams(0));
-
-        image = new ImageButton(getActivity());
-        image.setImageResource(R.drawable.chords_a7_0);
-
-        row.addView(image, new TableRow.LayoutParams(1));
-
-        tl.addView(row, new TableLayout.LayoutParams());
-
-
-        row = new TableRow(getActivity());
-        image = new ImageButton(getActivity());
-        setChordResource(image, R.drawable.chords_bm7_0);
-
-        row.addView(image, new TableRow.LayoutParams(0));
-
-        image = new ImageButton(getActivity());
-        setChordResource(image, R.drawable.chords_bm_0);
-
-        row.addView(image, new TableRow.LayoutParams(1));
-
-        tl.addView(row, new TableLayout.LayoutParams());
-        */
-
-                    /*
-
-                    List<Integer> chords = mItem.getChords();
-                    if(chords != null) {
-                        for(int i = 0; i < chords.size(); i++) {
-
+    private void showAlternateIfExist(View parent, Chord selected) {
+        if(alternateChordMap.containsKey(selected)) {
+            chordForDialog = selected;
+            ListView list = new ListView(getActivity(), null, android.R.attr.dropDownListViewStyle);
+            // list.setLayoutParams(AbsListView.LayoutParams.WRAP_CONTENT, AbsListView.LayoutParams.WRAP_CONTENT)
+            list.setBackgroundColor(Color.LTGRAY);
+            final List<Chord> alts = alternateChordMap.get(selected);
+            ArrayAdapter<Chord> adapter = new ArrayAdapter<Chord>(getActivity(), 0, alts) {
+                @Override
+                public View getView(int position, View convertView, ViewGroup parent) {
+                    ImageButton button = new ImageButton(getActivity());
+                    Chord altChord = alternateChordMap.get(chordForDialog).get(position);
+                    setChordResource(button, chordResourceMap.get(altChord));
+                    button.setTag(altChord);
+                    button.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            replaceChord(chordForDialog, (Chord)view.getTag());
+                            popupForAlts.dismiss();
                         }
-                    }
-                    */
+                    });
+                    return button;
+                }
+            };
+            list.setAdapter(adapter);
+            popupForAlts = new PopupWindow(list,
+                    getButtonSize(),
+                    ViewGroup.LayoutParams.WRAP_CONTENT);
+            // popup.setBackgroundDrawable()
+            // popup.setOutsideTouchable(false);
+            // popupForAlts.showAtLocation(parent, Gravity., 0, 0 );
+            popupForAlts.showAsDropDown(parent, 0,  -(1+alts.size())* (getButtonSize()+10));
+
+            // popup.showAsDropDown(parent);
+        }
+    }
+
+    private void replaceChord(Chord from, Chord to) {
+        if(from.equals(to))
+            return;
+
+        List<Integer> chordIds = mItem.getChords();
+        int index = chordIds.indexOf(from.encodeToInt());
+        chordIds.set(index, to.encodeToInt());
+        mItem.setChords(chordIds); // this code is unnecessary. but for sure.
+        formatTableIfReady();
+    }
+
+    private void dismissPopupIfShown() {
+        if(isAltPopupShown()) {
+            popupForAlts.dismiss();
+            popupForAlts = null;
+        }
+    }
+
+    private boolean isAltPopupShown() {
+        return popupForAlts != null && popupForAlts.isShowing();
+    }
+
+    public boolean doBackProcess() {
+        if(isAltPopupShown()) {
+            dismissPopupIfShown();
+            return true;
+        }
+        return false;
+    }
+
+    private int getButtonSize() {
+        return CHORD_IMAGE_WIDTH+CELL_MARGIN;
     }
 
     private List<Chord> toChords(List<Integer> chords) {
