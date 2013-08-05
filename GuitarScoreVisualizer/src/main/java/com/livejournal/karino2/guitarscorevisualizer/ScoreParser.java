@@ -25,11 +25,6 @@ public class ScoreParser {
     public List<Chord> parseAll(List<String> texts) {
         ArrayList<Chord> res = new ArrayList<Chord>();
         for(String line : texts) {
-            if(line.length() > 4) {
-                char charAt = line.charAt(3);
-                int code = line.codePointAt(3);
-                Log.d("GSV", "charAt=" + charAt + ", code=" + code);
-            }
             List<Chord> oneRes = parseOneLine(line);
             res.addAll(oneRes);
         }

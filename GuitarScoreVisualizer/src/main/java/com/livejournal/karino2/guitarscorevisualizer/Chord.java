@@ -1,6 +1,7 @@
 package com.livejournal.karino2.guitarscorevisualizer;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -46,29 +47,31 @@ public class Chord {
     public static final int MODIFIER_NUM = 14;
 
 
-    final static String[] basePatText = { "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"};
+    final static String[] basePatText = { "C", "C#", "Db", "D", "D#", "Eb", "E", "F", "F#", "Gb", "G", "G#", "Ab", "A", "A#", "Bb", "B"};
     final static String[] modPatText =  { "", "m", "m7", "M7", "7", "sus4", "add9", "7sus4", "dim", "aug", "m7-5", "6", "m6", "mM7"};
     final static String[] fracPatText= {"Cm/G", "G/D"};
-    List<Pattern> chordsPat = new ArrayList<Pattern>();
+    final static Integer[] patToChordIndexTable = {0, 1, 1, 2, 3, 3, 4, 5, 6, 6, 7, 8, 8, 9, 10, 10, 11, 12, 12, 13 };
 
     public static Chord patIndexToChord(int patIndex) {
         int base = patIndex/MODIFIER_NUM;
-        if(base >= BASE_FRAC_BEGIN)
-            return new Chord(BASE_FRAC_BEGIN+ patIndex - BASE_NUM*MODIFIER_NUM, MODIFIER_MAJOR);
+        if(base >= patToChordIndexTable.length)
+            return new Chord(BASE_FRAC_BEGIN+ patIndex - patToChordIndexTable.length*MODIFIER_NUM, MODIFIER_MAJOR);
 
+        base = patToChordIndexTable[base];
         int mod = patIndex%MODIFIER_NUM;
         return new Chord(base, mod);
     }
 
     public static String makeChordText(int baseIndex, int modIndex) {
-        return basePatText[baseIndex] + modPatText[modIndex];
+        int base = Arrays.asList(patToChordIndexTable).indexOf(baseIndex);
+        return basePatText[base] + modPatText[modIndex];
     }
 
     public static List<String> chordsText() {
         ArrayList<String> chords = new ArrayList<String>();
-        for(int base = 0; base < BASE_NUM; base++) {
-            for(int mod = 0; mod < MODIFIER_NUM; mod++) {
-                chords.add(makeChordText(base, mod));
+        for(String base: basePatText) {
+            for(String mod : modPatText) {
+                chords.add(base +mod);
             }
         }
         for(int fracIndex = BASE_FRAC_BEGIN; fracIndex <= BASE_FRAC_END; fracIndex++ ) {

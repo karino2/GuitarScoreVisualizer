@@ -118,6 +118,22 @@ public class ScoreParserTest extends TestCase {
         assertEquals(new Chord(Chord.BASE_Cm_ON_G, Chord.MODIFIER_MAJOR), res.get(0));
     }
 
+    public void testParseOneLine_ChordBorder() {
+        verifyParseOneLine_OneChord("|C|", new Chord(Chord.BASE_C, Chord.MODIFIER_MAJOR));
+        verifyParseOneLine_OneChord("|Cm|", new Chord(Chord.BASE_C, Chord.MODIFIER_MINOR));
+        verifyParseOneLine_OneChord("|CmM7|", new Chord(Chord.BASE_C, Chord.MODIFIER_MINOR_MAJORSEVENS));
+        verifyParseOneLine_OneChord("|C#|", new Chord(Chord.BASE_C_SHARP, Chord.MODIFIER_MAJOR));
+        verifyParseOneLine_OneChord("|BmM7|", new Chord(Chord.BASE_B, Chord.MODIFIER_MINOR_MAJORSEVENS));
+        verifyParseOneLine_OneChord("|Cm/G|", new Chord(Chord.BASE_Cm_ON_G, Chord.MODIFIER_MAJOR));
+
+    }
+
+    private void verifyParseOneLine_OneChord(String input, Chord expect) {
+        List<Chord> res = parseOneLine(input);
+        assertEquals(1, res.size());
+        assertEquals(expect, res.get(0));
+    }
+
     public void testParseOneLine_RealData() {
         // List<Chord> res = parseOneLine("[3]｜Em｜A7｜Am7 Bm7｜Cm D｜");
         List<Chord> res = parseOneLine("[3]\uFF5CEm\uFF5CA7\uFF5CAm7 Bm7\uFF5CCm D\uFF5C");
@@ -135,27 +151,6 @@ public class ScoreParserTest extends TestCase {
     private void veryMakeChordText(int baseIndex, int modIndex, String expect) {
         String res = Chord.makeChordText(baseIndex, modIndex);
         assertEquals(expect, res);
-    }
-
-    public void testPatIndexToChord_C() {
-        // 0 C
-        // 1 Cm
-        // 2 Cm7
-        // 0+MODIFIER_NUM-1 CmM7
-        // 1*MODIFIER_NUM+0 C#
-        // 1*MODIFIER_NUM+1 C#m
-
-        verifyPatIndexToChord(new Chord(Chord.BASE_C, Chord.MODIFIER_MAJOR), 0);
-        verifyPatIndexToChord(new Chord(Chord.BASE_C, Chord.MODIFIER_MINOR), 1);
-        verifyPatIndexToChord(new Chord(Chord.BASE_C, Chord.MODIFIER_MINOR_MAJORSEVENS), Chord.MODIFIER_NUM-1);
-        verifyPatIndexToChord(new Chord(Chord.BASE_C_SHARP, Chord.MODIFIER_MAJOR), Chord.MODIFIER_NUM);
-        verifyPatIndexToChord(new Chord(Chord.BASE_B, Chord.MODIFIER_MINOR_MAJORSEVENS), Chord.BASE_NUM*Chord.MODIFIER_NUM-1);
-        verifyPatIndexToChord(new Chord(Chord.BASE_Cm_ON_G, Chord.MODIFIER_MAJOR), Chord.BASE_NUM*Chord.MODIFIER_NUM);
-    }
-
-    private void verifyPatIndexToChord(Chord expect, int inputPatIndex) {
-        Chord actual = Chord.patIndexToChord(inputPatIndex);
-        assertEquals(expect, actual);
     }
 
     public void testChordEncodeDecodeInt() {
