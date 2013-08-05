@@ -25,6 +25,10 @@ public class Database {
 
     }
 
+    public void deleteScore(long id) {
+        database.delete(SCORE_TABLE_NAME, "_id=?", new String[]{ String.valueOf(id) });
+    }
+
     static class DatabaseHelper extends SQLiteOpenHelper {
 
         DatabaseHelper(Context context) {

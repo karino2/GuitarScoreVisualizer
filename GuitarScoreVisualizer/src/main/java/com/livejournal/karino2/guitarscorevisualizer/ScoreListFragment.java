@@ -7,7 +7,14 @@ import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.view.ActionMode;
+import android.view.ContextMenu;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
@@ -73,6 +80,7 @@ public class ScoreListFragment extends ListFragment implements LoaderManager.Loa
         adapter.swapCursor(null);
     }
 
+
     /**
      * A callback interface that all activities containing this fragment must
      * implement. This mechanism allows activities to be notified of item
@@ -105,6 +113,50 @@ public class ScoreListFragment extends ListFragment implements LoaderManager.Loa
 
     SimpleCursorAdapter adapter;
 
+    /*
+    class ItemContextualActionCallback implements ActionMode.Callback {
+        long itemId;
+        ItemContextualActionCallback(long id) {
+            itemId = id;
+        }
+
+        @Override
+        public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
+            MenuInflater inflater = actionMode.getMenuInflater();
+            inflater.inflate(R.menu.list_context, menu);
+            return true;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
+            return false;
+        }
+
+        @Override
+        public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
+            switch(menuItem.getItemId()) {
+                case R.id.list_context_delete_item:
+                    getDatabase(getActivity()).deleteScore(itemId);
+                    reloadCursor();
+                    return true;
+            }
+            return false;
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode aMode) {
+            actionMode = null;
+        }
+    }
+    */
+
+    public void reloadCursor() {
+        Loader<Object> loader = getLoaderManager().getLoader(0);
+        if(loader != null)
+            loader.forceLoad();
+    }
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -128,11 +180,66 @@ public class ScoreListFragment extends ListFragment implements LoaderManager.Loa
 
         setListAdapter(adapter);
         getLoaderManager().initLoader(0, null, this);
+
     }
+
+    // ActionMode actionMode;
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+        getListView().setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
+            @Override
+            public void onItemCheckedStateChanged(ActionMode actionMode, int i, long l, boolean b) {
+
+            }
+
+            @Override
+            public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
+                MenuInflater inflater = actionMode.getMenuInflater();
+                inflater.inflate(R.menu.list_context, menu);
+                return true;
+            }
+
+            @Override
+            public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
+                return false;
+            }
+
+            @Override
+            public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
+                switch(menuItem.getItemId()) {
+                    case R.id.list_context_delete_item:
+                        long[] ids = getListView().getCheckedItemIds();
+                        for(long itemId : ids) {
+                            getDatabase(getActivity()).deleteScore(itemId);
+                        }
+                        reloadCursor();
+                        actionMode.finish();
+                        return true;
+                }
+                return false;
+            }
+
+            @Override
+            public void onDestroyActionMode(ActionMode actionMode) {
+
+            }
+        });
+
+        /*
+        getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long id) {
+                if(actionMode != null)
+                    return false;
+                actionMode = getActivity().startActionMode(new ItemContextualActionCallback(id));
+                view.setSelected(true);
+                return true;
+            }
+        });
+        */
 
         // Restore the previously serialized activated item position.
         if (savedInstanceState != null
@@ -169,6 +276,7 @@ public class ScoreListFragment extends ListFragment implements LoaderManager.Loa
         // fragment is attached to one) that an item has been selected.
         mCallbacks.onItemSelected((Long)view.findViewById(R.id.textViewDate).getTag());
     }
+
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
