@@ -20,6 +20,8 @@ public class EditActivity extends Activity {
             @Override
             public void onClick(View view) {
                 saveScoreIfNecessary();
+                setResult(Activity.RESULT_OK);
+                finish();
             }
         });
         ((Button)findViewById(R.id.buttonCancel)).setOnClickListener(new View.OnClickListener() {

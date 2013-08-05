@@ -96,9 +96,8 @@ public class ScoreListActivity extends FragmentActivity
     }
 
     private void reload() {
-        Loader<Object> loader = getLoaderManager().getLoader(0);
-        if(loader != null)
-            loader.forceLoad();
+        ((ScoreListFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.score_list)).reloadCursor();
     }
 
     private void startEditActivity() {
