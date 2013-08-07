@@ -125,6 +125,7 @@ public class ScoreParserTest extends TestCase {
         verifyParseOneLine_OneChord("|C#|", new Chord(Chord.BASE_C_SHARP, Chord.MODIFIER_MAJOR));
         verifyParseOneLine_OneChord("|BmM7|", new Chord(Chord.BASE_B, Chord.MODIFIER_MINOR_MAJORSEVENS));
         verifyParseOneLine_OneChord("|Cm/G|", new Chord(Chord.BASE_Cm_ON_G, Chord.MODIFIER_MAJOR));
+        verifyParseOneLine_OneChord("|A+F|", new Chord(Chord.BASE_A_PLUS_F, Chord.MODIFIER_MAJOR));
 
     }
 
@@ -140,18 +141,6 @@ public class ScoreParserTest extends TestCase {
         assertEquals(6, res.size());
     }
 
-    public void testMakeChordText() {
-        veryMakeChordText(Chord.BASE_C, Chord.MODIFIER_MAJOR, "C");
-        veryMakeChordText(Chord.BASE_C, Chord.MODIFIER_MINORSEVEN_FLATFIVE, "Cm7-5");
-        veryMakeChordText(Chord.BASE_C, Chord.MODIFIER_MINOR_MAJORSEVENS, "CmM7");
-        veryMakeChordText(Chord.BASE_C_SHARP, Chord.MODIFIER_MAJOR, "C#");
-        veryMakeChordText(Chord.BASE_B, Chord.MODIFIER_MINOR_MAJORSEVENS, "BmM7");
-    }
-
-    private void veryMakeChordText(int baseIndex, int modIndex, String expect) {
-        String res = Chord.makeChordText(baseIndex, modIndex);
-        assertEquals(expect, res);
-    }
 
     public void testChordEncodeDecodeInt() {
         verifyEncodeDecode(Chord.BASE_C, Chord.MODIFIER_MAJOR);

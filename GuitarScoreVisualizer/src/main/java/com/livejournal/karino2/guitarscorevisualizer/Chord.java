@@ -26,8 +26,9 @@ public class Chord {
     // I treat frac code as special base
     public static final int BASE_FRAC_BEGIN = BASE_NUM;
     public static final int BASE_Cm_ON_G = BASE_FRAC_BEGIN;
-    public static final int BASE_G_ON_D = BASE_Cm_ON_G+1;
-    public static final int BASE_FRAC_END = BASE_G_ON_D;
+    public static final int BASE_G_ON_D = BASE_FRAC_BEGIN+1;
+    public static final int BASE_A_PLUS_F = BASE_FRAC_BEGIN+2;
+    public static final int BASE_FRAC_END = BASE_FRAC_BEGIN+2;
 
 
     public static final int MODIFIER_MAJOR = 0;
@@ -49,8 +50,8 @@ public class Chord {
 
     final static String[] basePatText = { "C", "C#", "Db", "D", "D#", "Eb", "E", "F", "F#", "Gb", "G", "G#", "Ab", "A", "A#", "Bb", "B"};
     final static String[] modPatText =  { "", "m", "m7", "M7", "7", "sus4", "add9", "7sus4", "dim", "aug", "m7-5", "6", "m6", "mM7"};
-    final static String[] fracPatText= {"Cm/G", "G/D"};
-    final static Integer[] patToChordIndexTable = {0, 1, 1, 2, 3, 3, 4, 5, 6, 6, 7, 8, 8, 9, 10, 10, 11, 12, 12, 13 };
+    final static String[] fracPatText= {"Cm/G", "G/D", "A\\+F"};
+    final static Integer[] patToChordIndexTable = {0, 1, 1, 2, 3, 3, 4, 5, 6, 6, 7, 8, 8, 9, 10, 10, 11};
 
     public static Chord patIndexToChord(int patIndex) {
         int base = patIndex/MODIFIER_NUM;
@@ -60,11 +61,6 @@ public class Chord {
         base = patToChordIndexTable[base];
         int mod = patIndex%MODIFIER_NUM;
         return new Chord(base, mod);
-    }
-
-    public static String makeChordText(int baseIndex, int modIndex) {
-        int base = Arrays.asList(patToChordIndexTable).indexOf(baseIndex);
-        return basePatText[base] + modPatText[modIndex];
     }
 
     public static List<String> chordsText() {
