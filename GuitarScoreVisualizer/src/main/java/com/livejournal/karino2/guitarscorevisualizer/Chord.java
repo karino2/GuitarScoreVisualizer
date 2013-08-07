@@ -96,7 +96,7 @@ public class Chord {
     int modifier;
     int alternate;
 
-    final static int ALTERNATE_HICODE = 1;
+    public final static int ALTERNATE_HICODE = 1;
     public Chord(int baseVal, int modVal, int alternate) {
         baseTone = baseVal;
         modifier = modVal;

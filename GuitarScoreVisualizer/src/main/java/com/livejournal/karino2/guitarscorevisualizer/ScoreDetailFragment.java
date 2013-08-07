@@ -11,6 +11,9 @@ import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -21,6 +24,7 @@ import android.widget.PopupWindow;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -50,8 +54,7 @@ public class ScoreDetailFragment extends Fragment {
      * fragment (e.g. upon screen orientation changes).
      */
     public ScoreDetailFragment() {
-
-
+        setHasOptionsMenu(true);
     }
 
     int CHORD_IMAGE_WIDTH = 64;
@@ -67,7 +70,7 @@ public class ScoreDetailFragment extends Fragment {
                 // never comming?
                 throw new RuntimeException("never comming?");
             } else {
-                mItem = Database.getInstance(getActivity()).getScoreById(itemID);
+                mItem = getDatabase().getScoreById(itemID);
             }
         }
 
@@ -79,6 +82,10 @@ public class ScoreDetailFragment extends Fragment {
 
         float imageWidthCm = 0.9f;
         CHORD_IMAGE_WIDTH =  (int)(dpi * imageWidthCm / 2.54f) + 1;
+    }
+
+    private Database getDatabase() {
+        return Database.getInstance(getActivity());
     }
 
     public static void highQualityStretch( Bitmap src, Bitmap dest )
@@ -185,6 +192,7 @@ public class ScoreDetailFragment extends Fragment {
 
     private void onChordsComming(List<Integer> chordInts) {
         mItem.setChords(chordInts);
+        getDatabase().updateScore(mItem);
         formatTableIfReady();
     }
 
@@ -360,6 +368,24 @@ public class ScoreDetailFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.detail, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.action_reset:
+                Toast.makeText(getActivity(), "Reset selected chords", Toast.LENGTH_LONG).show();
+                mItem.setChords(null);
+                getDatabase().updateScore(mItem);
+                startParseChord();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     private void replaceChord(Chord from, Chord to) {
         if(from.equals(to))
             return;
@@ -368,6 +394,7 @@ public class ScoreDetailFragment extends Fragment {
         int index = chordIds.indexOf(from.encodeToInt());
         chordIds.set(index, to.encodeToInt());
         mItem.setChords(chordIds); // this code is unnecessary. but for sure.
+        getDatabase().updateScore(mItem);
         formatTableIfReady();
     }
 

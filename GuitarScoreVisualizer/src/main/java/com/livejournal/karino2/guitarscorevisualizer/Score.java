@@ -14,12 +14,19 @@ public class Score {
     private List<String> texts;
     private List<Integer> chords;
 
-    public Score(long id, Date createdDate, String inTitle, List<String> inTexts) {
+    public Score(long id, Date createdDate, String inTitle, List<String> inTexts, List<Integer> inChords) {
         setId(id);
         setCreated(createdDate);
         setTitle(inTitle);
         setTexts(inTexts);
-        setChords(null);
+        setChords(inChords);
+    }
+    public Score(long id, Date createdDate, String inTitle, List<String> inTexts) {
+        this(id, createdDate, inTitle, inTexts, null);
+    }
+
+    public Score(long id, Date createdDate, String inTitle, String inTexts, String inChords) {
+        this(id, createdDate, inTitle, decodeTexts(inTexts), decodeChords(inChords));
     }
 
     public Score(long id, Date createdDate, String inTitle, String inTexts) {
@@ -32,6 +39,21 @@ public class Score {
 
     public Score(Date createdDate, String inTitle, String inTexts) {
         this(createdDate, inTitle, decodeTexts(inTexts));
+    }
+
+    private static ArrayList<Integer> decodeChords(String inChords) {
+        if(inChords == null || inChords.equals(""))
+            return null;
+        ArrayList<Integer> texts = new ArrayList<Integer>();
+        int pos = 0;
+        int index = inChords.indexOf(',', pos);
+        while(index != -1) {
+            texts.add(Integer.parseInt(inChords.substring(pos, index)));
+            pos = index+1;
+            index = inChords.indexOf(',', pos);
+        }
+        texts.add(Integer.parseInt(inChords.substring(pos)));
+        return texts;
     }
 
     private static ArrayList<String> decodeTexts(String inTexts) {
@@ -79,7 +101,19 @@ public class Score {
     }
 
     public String getEncodedChordList() {
-        return "";
+        if(getChords() == null)
+            return "";
+        StringBuilder res = new StringBuilder();
+        boolean firstTime = true;
+        for(int chord : getChords()) {
+            if(firstTime) {
+                firstTime = false;
+            } else {
+                res.append(",");
+            }
+            res.append(chord);
+        }
+        return res.toString();
     }
 
     public void setTexts(List<String> texts) {

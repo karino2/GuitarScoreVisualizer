@@ -19,7 +19,7 @@ public class Database {
     public Score getScoreById(long id) {
         Cursor cursor = database.query(SCORE_TABLE_NAME, new String[] {"_id", "DATE", "TITLE", "SCORE", "CHORDLIST"}, "_id = ?", new String[] { String.valueOf(id) }, null, null, null);
         cursor.moveToFirst();
-        Score score = new Score(cursor.getLong(0), new Date(cursor.getLong(1)), cursor.getString(2), cursor.getString(3));
+        Score score = new Score(cursor.getLong(0), new Date(cursor.getLong(1)), cursor.getString(2), cursor.getString(3), cursor.getString(4));
         cursor.close();
         return score;
 
