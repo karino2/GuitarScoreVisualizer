@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 /**
  * A list fragment representing a list of Scores. This fragment
@@ -138,6 +139,12 @@ public class ScoreListFragment extends ListFragment implements LoaderManager.Loa
                     tv.setTag(cursor.getLong(0)); // ID
                     return true;
                 }
+                if(columnIndex == 3)
+                {
+                    TextView tv = (TextView)view;
+                    tv.setText(makeEllipsisIfTooLong(cursor.getString(columnIndex)));
+                    return true;
+                }
                 return false;
             }});
 
@@ -145,6 +152,20 @@ public class ScoreListFragment extends ListFragment implements LoaderManager.Loa
         setListAdapter(adapter);
         getLoaderManager().initLoader(0, null, this);
 
+    }
+
+    static final int TOOLONG_LINE_NUM = 12;
+    private String makeEllipsisIfTooLong(String scoreText) {
+        List<String> scoreList = Score.decodeTexts(scoreText);
+        if(scoreList.size() <= TOOLONG_LINE_NUM)
+            return scoreText;
+        StringBuilder builder = new StringBuilder();
+        for(int i = 0; i < TOOLONG_LINE_NUM; i++) {
+            builder.append(scoreList.get(i));
+            builder.append("\n");
+        }
+        builder.append("...");
+        return builder.toString();
     }
 
     @Override
