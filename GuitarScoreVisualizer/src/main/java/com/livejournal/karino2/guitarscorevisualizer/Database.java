@@ -29,6 +29,13 @@ public class Database {
         database.delete(SCORE_TABLE_NAME, "_id=?", new String[]{ String.valueOf(id) });
     }
 
+    public void saveScore(Score score) {
+        if(score.getId() == -1)
+            insertScore(score);
+        else
+            updateScore(score);
+    }
+
     static class DatabaseHelper extends SQLiteOpenHelper {
 
         DatabaseHelper(Context context) {

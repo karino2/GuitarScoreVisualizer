@@ -16,7 +16,7 @@ public class Score {
 
     public Score(long id, Date createdDate, String inTitle, List<String> inTexts, List<Integer> inChords) {
         setId(id);
-        setCreated(createdDate);
+        setModifiedAt(createdDate);
         setTitle(inTitle);
         setTexts(inTexts);
         setChords(inChords);
@@ -56,7 +56,7 @@ public class Score {
         return texts;
     }
 
-    private static ArrayList<String> decodeTexts(String inTexts) {
+    public static ArrayList<String> decodeTexts(String inTexts) {
         ArrayList<String> texts = new ArrayList<String>();
         int pos = 0;
         int index = inTexts.indexOf('\n', pos);
@@ -74,7 +74,7 @@ public class Score {
         return created;
     }
 
-    public void setCreated(Date created) {
+    public void setModifiedAt(Date created) {
         this.created = created;
     }
 
@@ -134,5 +134,9 @@ public class Score {
 
     public long getId() {
         return id;
+    }
+
+    public void setTextsString(String inTexts) {
+        setTexts(decodeTexts(inTexts));
     }
 }

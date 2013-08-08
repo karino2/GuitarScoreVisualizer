@@ -1,7 +1,6 @@
 package com.livejournal.karino2.guitarscorevisualizer;
 
 import android.content.Intent;
-import android.content.Loader;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
@@ -28,7 +27,7 @@ import android.view.MenuItem;
 public class ScoreListActivity extends FragmentActivity
         implements ScoreListFragment.Callbacks {
 
-    final int ACTIVITY_ID_EDIT = 1;
+    final int ACTIVITY_ID_NEW = 1;
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -89,27 +88,27 @@ public class ScoreListActivity extends FragmentActivity
                 return true;
             case R.id.action_recreate:
                 Database.getInstance(this).recreate();
-                reload();
+                reloadList();
                 return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void reload() {
+    private void reloadList() {
         ((ScoreListFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.score_list)).reloadCursor();
     }
 
     private void startEditActivity() {
         Intent intent = new Intent(this, EditActivity.class);
-        startActivityForResult(intent, ACTIVITY_ID_EDIT);
+        startActivityForResult(intent, ACTIVITY_ID_NEW);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch(requestCode) {
-            case ACTIVITY_ID_EDIT:
-                reload();
+            case ACTIVITY_ID_NEW:
+                reloadList();
                 return;
         }
     }
@@ -124,13 +123,7 @@ public class ScoreListActivity extends FragmentActivity
             // In two-pane mode, show the detail view in this activity by
             // adding or replacing the detail fragment using a
             // fragment transaction.
-            Bundle arguments = new Bundle();
-            arguments.putLong(ScoreDetailFragment.ARG_ITEM_ID, id);
-            ScoreDetailFragment fragment = new ScoreDetailFragment();
-            fragment.setArguments(arguments);
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.score_detail_container, fragment)
-                    .commit();
+            updateDetailFragment(id);
 
         } else {
             // In single-pane mode, simply start the detail activity
@@ -139,5 +132,15 @@ public class ScoreListActivity extends FragmentActivity
             detailIntent.putExtra(ScoreDetailFragment.ARG_ITEM_ID, id);
             startActivity(detailIntent);
         }
+    }
+
+    private void updateDetailFragment(long id) {
+        Bundle arguments = new Bundle();
+        arguments.putLong(ScoreDetailFragment.ARG_ITEM_ID, id);
+        ScoreDetailFragment fragment = new ScoreDetailFragment();
+        fragment.setArguments(arguments);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.score_detail_container, fragment)
+                .commit();
     }
 }

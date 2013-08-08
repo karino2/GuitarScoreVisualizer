@@ -1,5 +1,6 @@
 package com.livejournal.karino2.guitarscorevisualizer;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -43,6 +44,7 @@ public class ScoreDetailFragment extends Fragment {
      * represents.
      */
     public static final String ARG_ITEM_ID = "item_id";
+    public static final int ACTIVITY_ID_EDIT = 1;
 
     /**
      * The dummy content this fragment is presenting.
@@ -118,8 +120,7 @@ public class ScoreDetailFragment extends Fragment {
 
         // Show the dummy content as text in a TextView.
         if (mItem != null) {
-            ((TextView) rootView.findViewById(R.id.score_detail_title)).setText(mItem.getTitle());
-            ((TextView) rootView.findViewById(R.id.score_detail_score)).setText(mItem.getEncodedTexts());
+            setTitleTextFromItem();
 
             rootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override
@@ -153,6 +154,11 @@ public class ScoreDetailFragment extends Fragment {
 
 
         return rootView;
+    }
+
+    private void setTitleTextFromItem() {
+        ((TextView) rootView.findViewById(R.id.score_detail_title)).setText(mItem.getTitle());
+        ((TextView) rootView.findViewById(R.id.score_detail_score)).setText(mItem.getEncodedTexts());
     }
 
     private boolean chordsReady() {
@@ -194,6 +200,16 @@ public class ScoreDetailFragment extends Fragment {
         mItem.setChords(chordInts);
         getDatabase().updateScore(mItem);
         formatTableIfReady();
+    }
+
+    public void reloadItem() {
+        if(mItem != null) {
+            mItem = getDatabase().getScoreById(mItem.getId());
+            if(rootView != null) {
+                setTitleTextFromItem();
+                startParseChord();
+            }
+        }
     }
 
     public static class UniqueCodeWrapper implements Iterable<Chord> {
@@ -392,8 +408,23 @@ public class ScoreDetailFragment extends Fragment {
                 getDatabase().updateScore(mItem);
                 startParseChord();
                 return true;
+            case R.id.action_edit:
+                Intent intent = new Intent(getActivity(), EditActivity.class);
+                intent.putExtra(EditActivity.ARG_ITEM_ID, mItem.getId());
+                startActivityForResult(intent, ACTIVITY_ID_EDIT);
+                return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case ACTIVITY_ID_EDIT:
+                reloadItem();
+                return;
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void replaceChord(Chord from, Chord to) {
