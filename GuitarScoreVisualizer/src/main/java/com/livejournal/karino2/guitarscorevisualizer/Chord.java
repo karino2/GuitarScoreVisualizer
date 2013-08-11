@@ -28,7 +28,11 @@ public class Chord {
     public static final int BASE_Cm_ON_G = BASE_FRAC_BEGIN;
     public static final int BASE_G_ON_D = BASE_FRAC_BEGIN+1;
     public static final int BASE_A_PLUS_F = BASE_FRAC_BEGIN+2;
-    public static final int BASE_FRAC_END = BASE_FRAC_BEGIN+2;
+    public static final int BASE_C_ON_E = BASE_FRAC_BEGIN+3;
+    public static final int BASE_Am_ON_C = BASE_FRAC_BEGIN+4;
+    public static final int BASE_FMASEVEN_ON_C = BASE_FRAC_BEGIN+5;
+    public static final int BASE_G_ON_B = BASE_FRAC_BEGIN+6;
+    public static final int BASE_FRAC_END = BASE_FRAC_BEGIN+6;
 
 
     public static final int MODIFIER_MAJOR = 0;
@@ -50,7 +54,7 @@ public class Chord {
 
     final static String[] basePatText = { "C", "C#", "Db", "D", "D#", "Eb", "E", "F", "F#", "Gb", "G", "G#", "Ab", "A", "A#", "Bb", "B"};
     final static String[] modPatText =  { "", "m", "m7", "M7", "7", "sus4", "add9", "7sus4", "dim", "aug", "m7-5", "6", "m6", "mM7"};
-    final static String[] fracPatText= {"Cm/G", "G/D", "A\\+F"};
+    final static String[] fracPatText= {"Cm/G", "G/D", "A\\+F", "C/E", "Am/C", "FM7/C", "G/B"};
     final static Integer[] patToChordIndexTable = {0, 1, 1, 2, 3, 3, 4, 5, 6, 6, 7, 8, 8, 9, 10, 10, 11};
 
     public static Chord patIndexToChord(int patIndex) {
