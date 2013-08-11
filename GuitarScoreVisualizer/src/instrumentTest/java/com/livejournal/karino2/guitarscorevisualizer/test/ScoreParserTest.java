@@ -141,6 +141,10 @@ public class ScoreParserTest extends TestCase {
         assertEquals(6, res.size());
     }
 
+    public void testParseOneLine_EndShouldMatch() {
+        verifyParseOneLine_OneChord("|C", new Chord(Chord.BASE_C, Chord.MODIFIER_MAJOR));
+    }
+
 
     public void testChordEncodeDecodeInt() {
         verifyEncodeDecode(Chord.BASE_C, Chord.MODIFIER_MAJOR);
