@@ -9,5 +9,6 @@
     <string name="delete_label">Delete</string>
     <string name="action_reset">Reset</string>
     <string name="action_edit">Edit</string>
+    <string name="action_add">Add</string>
 
 </resources>

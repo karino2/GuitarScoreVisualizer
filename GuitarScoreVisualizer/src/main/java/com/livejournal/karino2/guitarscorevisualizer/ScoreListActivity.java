@@ -83,12 +83,8 @@ public class ScoreListActivity extends FragmentActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
-            case R.id.action_new:
+            case R.id.action_add:
                 startEditActivity();
-                return true;
-            case R.id.action_recreate:
-                Database.getInstance(this).recreate();
-                reloadList();
                 return true;
         }
         return super.onOptionsItemSelected(item);
