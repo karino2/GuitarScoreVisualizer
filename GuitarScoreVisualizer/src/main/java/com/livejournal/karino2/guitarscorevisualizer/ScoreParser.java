@@ -18,7 +18,7 @@ public class ScoreParser {
 
     public ScoreParser() {
         for(String txtPat : Chord.chordsText()) {
-            chordsPat.add(Pattern.compile("[(\\uFF5C \\|](" + txtPat+ ")[\\uFF5C \\|]"));
+            chordsPat.add(Pattern.compile("[(\\uFF5C \\|](" + txtPat+ ")([\\uFF5C \\|]|$)"));
         }
     }
 
