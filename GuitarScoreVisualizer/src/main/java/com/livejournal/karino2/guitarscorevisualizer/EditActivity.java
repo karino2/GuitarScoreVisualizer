@@ -47,7 +47,7 @@ public class EditActivity extends Activity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
-            case R.id.action_edit:
+            case R.id.action_save:
                 saveScoreIfNecessary();
                 setResult(Activity.RESULT_OK);
                 finish();
