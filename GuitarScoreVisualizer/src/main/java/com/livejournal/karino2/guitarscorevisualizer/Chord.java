@@ -55,10 +55,10 @@ public class Chord {
 
 
 
-    final static String[] basePatText = { "C", "C#", "Db", "D", "D#", "Eb", "E", "F", "F#", "Gb", "G", "G#", "Ab", "A", "A#", "Bb", "B"};
+    final static String[] basePatText = { "C", "C#", "Db", "D", "D#", "Eb", "E", "F", "F#", "Gb", "G", "G#", "Ab", "A", "A#", "Bb", "B\\u266d", "B"};
     final static String[] modPatText =  { "", "m", "m7", "M7", "7", "sus4", "add9", "7sus4", "dim", "aug", "m7-5", "6", "m6", "mM7"};
     final static String[] fracPatText= {"Cm/G", "G/D", "A\\+F", "C/E", "Am/C", "FM7/C", "G/B", "F#m7/B", "Em7/A"};
-    final static Integer[] patToChordIndexTable = {0, 1, 1, 2, 3, 3, 4, 5, 6, 6, 7, 8, 8, 9, 10, 10, 11};
+    final static Integer[] patToChordIndexTable = {0, 1, 1, 2, 3, 3, 4, 5, 6, 6, 7, 8, 8, 9, 10, 10, 10, 11};
 
     public static Chord patIndexToChord(int patIndex) {
         int base = patIndex/MODIFIER_NUM;
