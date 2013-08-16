@@ -283,6 +283,7 @@ public class ScoreDetailFragment extends Fragment {
             chordResourceMap.put(new Chord(Chord.BASE_B, Chord.MODIFIER_MAJOR), R.drawable.chords_b_0);
             chordResourceMap.put(new Chord(Chord.BASE_B, Chord.MODIFIER_MINOR), R.drawable.chords_bm_0);
             chordResourceMap.put(new Chord(Chord.BASE_B, Chord.MODIFIER_MINORSEVENS), R.drawable.chords_bm7_0);
+            chordResourceMap.put(new Chord(Chord.BASE_B, Chord.MODIFIER_MAJORSEVENS), R.drawable.chords_bma7_0);
             chordResourceMap.put(new Chord(Chord.BASE_B, Chord.MODIFIER_SEVENS), R.drawable.chords_b7_0);
             chordResourceMap.put(new Chord(Chord.BASE_B, Chord.MODIFIER_MINOR_MAJORSEVENS), R.drawable.chords_bmma7_0);
             chordResourceMap.put(new Chord(Chord.BASE_C, Chord.MODIFIER_MAJOR), R.drawable.chords_c_0);
@@ -318,6 +319,7 @@ public class ScoreDetailFragment extends Fragment {
             chordResourceMap.put(new Chord(Chord.BASE_F, Chord.MODIFIER_DIM), R.drawable.chords_fdim_0);
             chordResourceMap.put(new Chord(Chord.BASE_F, Chord.MODIFIER_AUG), R.drawable.chords_faug_0);
             chordResourceMap.put(new Chord(Chord.BASE_F, Chord.MODIFIER_MINORSEVENS), R.drawable.chords_fm7_0);
+            chordResourceMap.put(new Chord(Chord.BASE_F, Chord.MODIFIER_MAJORSEVENS), R.drawable.chords_fma7_0);
             chordResourceMap.put(new Chord(Chord.BASE_F_SHARP, Chord.MODIFIER_MAJOR), R.drawable.chords_fsh_0);
             chordResourceMap.put(new Chord(Chord.BASE_F_SHARP, Chord.MODIFIER_SEVENS), R.drawable.chords_fsh7_0);
             chordResourceMap.put(new Chord(Chord.BASE_F_SHARP, Chord.MODIFIER_MINOR), R.drawable.chords_fshm_0);
@@ -327,6 +329,8 @@ public class ScoreDetailFragment extends Fragment {
             chordResourceMap.put(new Chord(Chord.BASE_G, Chord.MODIFIER_MAJOR), R.drawable.chords_g_0);
             chordResourceMap.put(new Chord(Chord.BASE_G, Chord.MODIFIER_MINOR), R.drawable.chords_gm_0);
             chordResourceMap.put(new Chord(Chord.BASE_G, Chord.MODIFIER_SIX), R.drawable.chords_g6_0);
+            chordResourceMap.put(new Chord(Chord.BASE_G, Chord.MODIFIER_SEVENS), R.drawable.chords_g7_0);
+            chordResourceMap.put(new Chord(Chord.BASE_G, Chord.MODIFIER_SUSFOUR), R.drawable.chords_gsus4_0);
             chordResourceMap.put(new Chord(Chord.BASE_G, Chord.MODIFIER_MINORSEVENS), R.drawable.chords_gm7_0);
             chordResourceMap.put(new Chord(Chord.BASE_G_SHARP, Chord.MODIFIER_MAJOR), R.drawable.chords_gsh_0);
             chordResourceMap.put(new Chord(Chord.BASE_G_SHARP, Chord.MODIFIER_MINORSEVENS), R.drawable.chords_gshm7_0);
