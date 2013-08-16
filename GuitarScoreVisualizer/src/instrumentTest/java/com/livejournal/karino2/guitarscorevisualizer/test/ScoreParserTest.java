@@ -145,6 +145,9 @@ public class ScoreParserTest extends TestCase {
         verifyParseOneLine_OneChord("|C", new Chord(Chord.BASE_C, Chord.MODIFIER_MAJOR));
     }
 
+    public void testParseOneLine_BeginShouldMatch() {
+        verifyParseOneLine_OneChord("C|", new Chord(Chord.BASE_C, Chord.MODIFIER_MAJOR));
+    }
 
     public void testChordEncodeDecodeInt() {
         verifyEncodeDecode(Chord.BASE_C, Chord.MODIFIER_MAJOR);

@@ -18,7 +18,7 @@ public class ScoreParser {
 
     public ScoreParser() {
         for(String txtPat : Chord.chordsText()) {
-            chordsPat.add(Pattern.compile("[(\\uFF5C \\|](" + txtPat+ ")([\\uFF5C \\|]|$)"));
+            chordsPat.add(Pattern.compile("(^|[(\\uFF5C \\|])(" + txtPat+ ")([\\uFF5C \\|]|$)"));
         }
     }
 
@@ -63,10 +63,10 @@ public class ScoreParser {
             while(matcher.find(from)) {
                 MatchResult mr = new MatchResult();
                 mr.patternIndex = i;
-                mr.start = matcher.start(1);
-                mr.end = matcher.end(1);
+                mr.start = matcher.start(2);
+                mr.end = matcher.end(2);
                 res.add(mr);
-                from = matcher.end(1)+1;
+                from = matcher.end(2)+1;
             }
         }
         Collections.sort(res, new Comparator<MatchResult>() {
