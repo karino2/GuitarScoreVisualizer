@@ -284,6 +284,7 @@ public class ScoreDetailFragment extends Fragment {
             chordResourceMap.put(new Chord(Chord.BASE_B, Chord.MODIFIER_MINOR), R.drawable.chords_bm_0);
             chordResourceMap.put(new Chord(Chord.BASE_B, Chord.MODIFIER_MINORSEVENS), R.drawable.chords_bm7_0);
             chordResourceMap.put(new Chord(Chord.BASE_B, Chord.MODIFIER_SEVENS), R.drawable.chords_b7_0);
+            chordResourceMap.put(new Chord(Chord.BASE_B, Chord.MODIFIER_MINOR_MAJORSEVENS), R.drawable.chords_bmma7_0);
             chordResourceMap.put(new Chord(Chord.BASE_C, Chord.MODIFIER_MAJOR), R.drawable.chords_c_0);
             chordResourceMap.put(new Chord(Chord.BASE_C, Chord.MODIFIER_MINOR), R.drawable.chords_cm_0);
             chordResourceMap.put(new Chord(Chord.BASE_C, Chord.MODIFIER_SEVENS), R.drawable.chords_c7_0);
@@ -301,16 +302,21 @@ public class ScoreDetailFragment extends Fragment {
             chordResourceMap.put(new Chord(Chord.BASE_D, Chord.MODIFIER_MINOR), R.drawable.chords_dm_0);
             chordResourceMap.put(new Chord(Chord.BASE_D, Chord.MODIFIER_SEVENSUSFOUR), R.drawable.chords_d7sus4_0);
             chordResourceMap.put(new Chord(Chord.BASE_D, Chord.MODIFIER_MINORSEVENS), R.drawable.chords_dm7_0);
+            chordResourceMap.put(new Chord(Chord.BASE_D, Chord.MODIFIER_MAJORSEVENS), R.drawable.chords_dma7_0);
             chordResourceMap.put(new Chord(Chord.BASE_D, Chord.MODIFIER_SEVENS), R.drawable.chords_d7_0);
             chordResourceMap.put(new Chord(Chord.BASE_D, Chord.MODIFIER_AUG), R.drawable.chords_daug_0);
+            chordResourceMap.put(new Chord(Chord.BASE_D, Chord.MODIFIER_SUSFOUR), R.drawable.chords_dsus4_0);
             chordResourceMap.put(new Chord(Chord.BASE_D_SHARP, Chord.MODIFIER_MAJOR), R.drawable.chords_dsh_0);
             chordResourceMap.put(new Chord(Chord.BASE_D_SHARP, Chord.MODIFIER_SUSFOUR), R.drawable.chords_dshsus4_0);
             chordResourceMap.put(new Chord(Chord.BASE_E, Chord.MODIFIER_MAJOR), R.drawable.chords_e_0);
             chordResourceMap.put(new Chord(Chord.BASE_E, Chord.MODIFIER_SUSFOUR), R.drawable.chords_esus4_0);
             chordResourceMap.put(new Chord(Chord.BASE_E, Chord.MODIFIER_MINOR), R.drawable.chords_em_0);
             chordResourceMap.put(new Chord(Chord.BASE_E, Chord.MODIFIER_MINORSEVENS), R.drawable.chords_em7_0);
+            chordResourceMap.put(new Chord(Chord.BASE_E, Chord.MODIFIER_MINOR_MAJORSEVENS), R.drawable.chords_emma7_0);
+            chordResourceMap.put(new Chord(Chord.BASE_Em7_ON_A, Chord.MODIFIER_MAJOR), R.drawable.chords_em7_on_a_0);
             chordResourceMap.put(new Chord(Chord.BASE_F, Chord.MODIFIER_MAJOR), R.drawable.chords_f_0);
             chordResourceMap.put(new Chord(Chord.BASE_F, Chord.MODIFIER_DIM), R.drawable.chords_fdim_0);
+            chordResourceMap.put(new Chord(Chord.BASE_F, Chord.MODIFIER_AUG), R.drawable.chords_faug_0);
             chordResourceMap.put(new Chord(Chord.BASE_F, Chord.MODIFIER_MINORSEVENS), R.drawable.chords_fm7_0);
             chordResourceMap.put(new Chord(Chord.BASE_F_SHARP, Chord.MODIFIER_MAJOR), R.drawable.chords_fsh_0);
             chordResourceMap.put(new Chord(Chord.BASE_F_SHARP, Chord.MODIFIER_SEVENS), R.drawable.chords_fsh7_0);
@@ -320,6 +326,7 @@ public class ScoreDetailFragment extends Fragment {
             chordResourceMap.put(new Chord(Chord.BASE_FSHARPMINORSEVENS_ON_B, Chord.MODIFIER_MAJOR), R.drawable.chords_fshm7_on_b_0);
             chordResourceMap.put(new Chord(Chord.BASE_G, Chord.MODIFIER_MAJOR), R.drawable.chords_g_0);
             chordResourceMap.put(new Chord(Chord.BASE_G, Chord.MODIFIER_MINOR), R.drawable.chords_gm_0);
+            chordResourceMap.put(new Chord(Chord.BASE_G, Chord.MODIFIER_SIX), R.drawable.chords_g6_0);
             chordResourceMap.put(new Chord(Chord.BASE_G, Chord.MODIFIER_MINORSEVENS), R.drawable.chords_gm7_0);
             chordResourceMap.put(new Chord(Chord.BASE_G_SHARP, Chord.MODIFIER_MAJOR), R.drawable.chords_gsh_0);
             chordResourceMap.put(new Chord(Chord.BASE_G_SHARP, Chord.MODIFIER_MINORSEVENS), R.drawable.chords_gshm7_0);
