@@ -24,7 +24,9 @@
               android:minHeight="200dp"
               android:padding="16dp"
               android:textIsSelectable="true"
-              tools:context=".ScoreDetailFragment"/>
+              tools:context=".ScoreDetailFragment"
+              android:text="Text Here"
+              android:textSize="16dp"/>
     <TableLayout
             android:id="@+id/tableChords"
             android:layout_width="match_parent"
