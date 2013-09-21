@@ -316,6 +316,7 @@ public class ScoreDetailFragment extends Fragment {
             chordResourceMap.put(new Chord(Chord.BASE_E, Chord.MODIFIER_MINOR_MAJORSEVENS), R.drawable.chords_emma7_0);
             chordResourceMap.put(new Chord(Chord.BASE_Em7_ON_A, Chord.MODIFIER_MAJOR), R.drawable.chords_em7_on_a_0);
             chordResourceMap.put(new Chord(Chord.BASE_F, Chord.MODIFIER_MAJOR), R.drawable.chords_f_0);
+            chordResourceMap.put(new Chord(Chord.BASE_F, Chord.MODIFIER_MAJOR, Chord.ALTERNATE_HICODE), R.drawable.chords_f_1);
             chordResourceMap.put(new Chord(Chord.BASE_F, Chord.MODIFIER_DIM), R.drawable.chords_fdim_0);
             chordResourceMap.put(new Chord(Chord.BASE_F, Chord.MODIFIER_AUG), R.drawable.chords_faug_0);
             chordResourceMap.put(new Chord(Chord.BASE_F, Chord.MODIFIER_MINORSEVENS), R.drawable.chords_fm7_0);
@@ -337,6 +338,7 @@ public class ScoreDetailFragment extends Fragment {
             chordResourceMap.put(new Chord(Chord.BASE_G, Chord.MODIFIER_MAJOR, Chord.ALTERNATE_HICODE), R.drawable.chords_g_1);
             chordResourceMap.put(new Chord(Chord.BASE_G_ON_D, Chord.MODIFIER_MAJOR), R.drawable.chords_g_on_d_0);
             chordResourceMap.put(new Chord(Chord.BASE_G_ON_B, Chord.MODIFIER_MAJOR), R.drawable.chords_g_on_b_0);
+            chordResourceMap.put(new Chord(Chord.BASE_A_SHARP_ON_A, Chord.MODIFIER_MAJOR), R.drawable.chords_ash_on_a_0);
 
 
             alternateChordMap = new HashMap<Chord, List<Chord>>();
@@ -346,6 +348,13 @@ public class ScoreDetailFragment extends Fragment {
             gAltList.add(new Chord(Chord.BASE_G, Chord.MODIFIER_MAJOR, Chord.ALTERNATE_HICODE));
             alternateChordMap.put(new Chord(Chord.BASE_G, Chord.MODIFIER_MAJOR), gAltList);
             alternateChordMap.put(new Chord(Chord.BASE_G, Chord.MODIFIER_MAJOR, Chord.ALTERNATE_HICODE), gAltList);
+
+            ArrayList<Chord> fAltList = new ArrayList<Chord>();
+            fAltList.add(new Chord(Chord.BASE_F, Chord.MODIFIER_MAJOR));
+            fAltList.add(new Chord(Chord.BASE_F, Chord.MODIFIER_MAJOR, Chord.ALTERNATE_HICODE));
+            alternateChordMap.put(new Chord(Chord.BASE_F, Chord.MODIFIER_MAJOR), fAltList);
+            alternateChordMap.put(new Chord(Chord.BASE_F, Chord.MODIFIER_MAJOR, Chord.ALTERNATE_HICODE), fAltList);
+
 
         }
         if(chordResourceMap.containsKey(chord))
