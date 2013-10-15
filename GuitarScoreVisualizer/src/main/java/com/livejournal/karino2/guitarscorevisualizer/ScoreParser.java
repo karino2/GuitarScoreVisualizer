@@ -60,13 +60,19 @@ public class ScoreParser {
             Pattern pat = chordsPat.get(i);
             Matcher matcher = pat.matcher(line);
             int from = 0;
-            while(matcher.find(from)) {
-                MatchResult mr = new MatchResult();
-                mr.patternIndex = i;
-                mr.start = matcher.start(2);
-                mr.end = matcher.end(2);
-                res.add(mr);
-                from = matcher.end(2)+1;
+            try {
+                while(matcher.find(from)) {
+                    MatchResult mr = new MatchResult();
+                    mr.patternIndex = i;
+                    mr.start = matcher.start(2);
+                    mr.end = matcher.end(2);
+                    res.add(mr);
+                    from = matcher.end(2)+1;
+                }
+            }catch(IndexOutOfBoundsException e) {
+                // I don't know why this situation happen, but there is error report.
+                // So I just ignore this exception because this is vital while ignore is only missing last chord at worst.
+                Log.d("GuitarScoreVisualizer", "Unknown exception case: " + e.getMessage());
             }
         }
         Collections.sort(res, new Comparator<MatchResult>() {
