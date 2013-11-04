@@ -1,8 +1,10 @@
 package com.livejournal.karino2.guitarscorevisualizer;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.FragmentActivity;
@@ -12,13 +14,18 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 
 
@@ -42,6 +49,8 @@ public class ScoreListActivity extends FragmentActivity
         implements ScoreListFragment.Callbacks {
 
     final int ACTIVITY_ID_NEW = 1;
+    final int REQUEST_PICK_FILE = 2;
+
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -106,9 +115,17 @@ public class ScoreListActivity extends FragmentActivity
             case R.id.action_export:
                 exportToJson();
                 return true;
+            case R.id.action_import:
+
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                intent.setType("file/*");
+                startActivityForResult(intent, REQUEST_PICK_FILE);
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
+
 
     Database getDatabase(Context ctx) { return Database.getInstance(ctx); }
 
@@ -171,6 +188,32 @@ public class ScoreListActivity extends FragmentActivity
             case ACTIVITY_ID_NEW:
                 reloadList();
                 return;
+            case REQUEST_PICK_FILE:
+                if(resultCode == Activity.RESULT_OK) {
+                    String path = data.getData().getPath();
+                    importFromJson(path);
+                    reloadList();
+                }
+                return;
+        }
+    }
+
+    private void importFromJson(String path) {
+        Gson gson = new Gson();
+
+        Type collectionType = new TypeToken<Collection<Database.ScoreDto>>(){}.getType();
+
+        Database db = getDatabase(this);
+
+        try {
+            Collection<Database.ScoreDto> col = gson.fromJson(new FileReader(path), collectionType);
+            Database.ScoreDto[] results = col.toArray(new Database.ScoreDto[0]);
+            for(int i = 0; i < results.length; i++) {
+                Database.ScoreDto dto = results[results.length-1-i];
+                db.insertScoreDto(dto);
+            }
+        } catch (FileNotFoundException e) {
+            showMessage("File not found: " + e.getMessage());
         }
     }
 
@@ -192,6 +235,13 @@ public class ScoreListActivity extends FragmentActivity
             Intent detailIntent = new Intent(this, ScoreDetailActivity.class);
             detailIntent.putExtra(ScoreDetailFragment.ARG_ITEM_ID, id);
             startActivity(detailIntent);
+        }
+    }
+
+    @Override
+    public void onItemsDeleted() {
+        if(mTwoPane) {
+            updateDetailFragment(-1);
         }
     }
 

@@ -68,9 +68,7 @@ public class ScoreDetailFragment extends Fragment {
         if (getArguments().containsKey(ARG_ITEM_ID)) {
             long itemID = getArguments().getLong(ARG_ITEM_ID);
             if(itemID == -1) {
-                // TODO: implement here.
-                // never comming?
-                throw new RuntimeException("never comming?");
+                mItem = null;
             } else {
                 mItem = getDatabase().getScoreById(itemID);
             }
@@ -162,7 +160,7 @@ public class ScoreDetailFragment extends Fragment {
     }
 
     private boolean chordsReady() {
-        return mItem.getChords() != null;
+        return mItem == null || ( mItem.getChords() != null);
     }
 
     Handler handler = new Handler();

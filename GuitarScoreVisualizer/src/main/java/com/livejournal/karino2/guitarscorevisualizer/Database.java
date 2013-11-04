@@ -41,6 +41,15 @@ public class Database {
             updateScore(score);
     }
 
+    public void insertScoreDto(ScoreDto dto) {
+        ContentValues values = new ContentValues();
+        values.put("DATE", dto.date);
+        values.put("TITLE", dto.title);
+        values.put("SCORE", dto.score);
+        values.put("CHORDLIST", dto.chordList);
+        database.insert(SCORE_TABLE_NAME, null, values);
+    }
+
     static class DatabaseHelper extends SQLiteOpenHelper {
 
         DatabaseHelper(Context context) {

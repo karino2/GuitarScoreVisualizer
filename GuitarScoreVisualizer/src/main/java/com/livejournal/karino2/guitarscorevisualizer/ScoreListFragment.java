@@ -92,6 +92,7 @@ public class ScoreListFragment extends ListFragment implements LoaderManager.Loa
          * Callback for when an item has been selected.
          */
         public void onItemSelected(long id);
+        public void onItemsDeleted();
     }
 
     /**
@@ -101,6 +102,11 @@ public class ScoreListFragment extends ListFragment implements LoaderManager.Loa
     private static Callbacks sDummyCallbacks = new Callbacks() {
         @Override
         public void onItemSelected(long id) {
+        }
+
+        @Override
+        public void onItemsDeleted() {
+
         }
     };
 
@@ -200,6 +206,7 @@ public class ScoreListFragment extends ListFragment implements LoaderManager.Loa
                         }
                         reloadCursor();
                         actionMode.finish();
+                        mCallbacks.onItemsDeleted();
                         return true;
                 }
                 return false;
