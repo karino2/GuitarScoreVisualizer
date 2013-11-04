@@ -5,7 +5,12 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Environment;
 
+import com.google.gson.Gson;
+
+import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -119,4 +124,28 @@ public class Database {
         values.put("CHORDLIST", score.getEncodedChordList());
         return values;
     }
+
+    public static class ScoreDto {
+        public long date;
+        public String title;
+        public String score;
+        public String chordList;
+        ScoreDto() {}
+    }
+
+    //         Score score = new Score(cursor.getLong(0), new Date(cursor.getLong(1)), cursor.getString(2), cursor.getString(3), cursor.getString(4));
+    public ScoreDto toDto(Cursor cursor) {
+        ScoreDto dto = new ScoreDto();
+        dto.date = cursor.getLong(1);
+        dto.title = cursor.getString(2);
+        dto.score = cursor.getString(3);
+        dto.chordList = cursor.getString(4);
+        return dto;
+    }
+
+    public Cursor retrieveAllForSerialize() {
+        return database.query(SCORE_TABLE_NAME, new String[] {"_id", "DATE", "TITLE", "SCORE", "CHORDLIST"}, null, null, null, null, "DATE DESC, _id DESC");
+    }
+
+
 }

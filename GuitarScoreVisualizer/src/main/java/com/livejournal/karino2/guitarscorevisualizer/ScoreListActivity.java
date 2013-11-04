@@ -1,11 +1,25 @@
 package com.livejournal.karino2.guitarscorevisualizer;
 
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
+
+import com.google.gson.Gson;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 
 
 /**
@@ -86,9 +100,57 @@ public class ScoreListActivity extends FragmentActivity
             case R.id.action_add:
                 startEditActivity();
                 return true;
+            case R.id.action_export:
+                exportToJson();
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
+
+    Database getDatabase(Context ctx) { return Database.getInstance(ctx); }
+
+
+    public void exportToJson() {
+        Gson gson = new Gson();
+
+        SimpleDateFormat timeStampFormat = new SimpleDateFormat("yyyyMMdd_HHmmssSS");
+        String filename = timeStampFormat.format(new Date()) + ".json";
+        File file = new File(Environment.getExternalStorageDirectory(), filename);
+
+
+        // gson.toJson();
+        showMessage("saved at " + file.getAbsolutePath());
+        ArrayList<Database.ScoreDto> scoreList = new ArrayList<Database.ScoreDto>();
+
+        Database db = getDatabase(this);
+        Cursor cursor = db.retrieveAllForSerialize();
+        try {
+            if(!cursor.moveToFirst())
+            {
+                showMessage("no score");
+                return;
+            }
+            do {
+                scoreList.add(db.toDto(cursor));
+            }while(cursor.moveToNext());
+        }finally {
+            cursor.close();
+        }
+
+        try {
+            FileWriter writer = new FileWriter(file);
+            // BufferedWriter bw = new BufferedWriter(new FileWriter(file), 8*1024);
+            gson.toJson(scoreList, writer);
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void showMessage(String msg) {
+        Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+    }
+
 
     private void reloadList() {
         ((ScoreListFragment) getSupportFragmentManager()

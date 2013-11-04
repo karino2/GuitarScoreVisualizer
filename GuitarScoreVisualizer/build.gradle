@@ -11,10 +11,11 @@ apply plugin: 'android'
 repositories {
     mavenCentral()
 }
-
 dependencies {
+    compile 'com.google.code.gson:gson:2.2.4'
     compile 'com.android.support:support-v4:13.0.+'
 }
+
 
 android {
     compileSdkVersion 17

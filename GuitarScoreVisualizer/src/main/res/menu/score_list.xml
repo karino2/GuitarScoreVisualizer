@@ -4,4 +4,8 @@
           android:icon="@android:drawable/ic_menu_add"
           android:showAsAction="ifRoom"
           />
+    <item android:id="@+id/action_export"
+        android:title="@string/action_export"></item>
+    <item android:id="@+id/action_import"
+        android:title="@string/action_import"></item>
 </menu>
