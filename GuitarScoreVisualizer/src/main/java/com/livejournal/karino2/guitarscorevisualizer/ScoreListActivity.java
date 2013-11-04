@@ -61,11 +61,14 @@ public class ScoreListActivity extends FragmentActivity
             // activity should be in two-pane mode.
             mTwoPane = true;
 
+            // for deletion, I just ignore this.
+            /*
             // In two-pane mode, list items should be given the
             // 'activated' state when touched.
             ((ScoreListFragment) getSupportFragmentManager()
                     .findFragmentById(R.id.score_list))
                     .setActivateOnItemClick(true);
+                    */
         }
 
         // TODO: If exposing deep links into your app, handle intents here.
