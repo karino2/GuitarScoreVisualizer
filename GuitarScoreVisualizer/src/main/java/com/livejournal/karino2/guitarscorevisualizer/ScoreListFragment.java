@@ -18,8 +18,11 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -208,6 +211,17 @@ public class ScoreListFragment extends ListFragment implements LoaderManager.Loa
                         actionMode.finish();
                         mCallbacks.onItemsDeleted();
                         return true;
+                    case R.id.list_context_export_item:
+                        long[] exportIds = getListView().getCheckedItemIds();
+                        try {
+                            File file = getDatabase(getActivity()).exportToJson(exportIds);
+                            showMessage("export at: " + file.getAbsolutePath());
+                        } catch (IOException e) {
+                            showMessage("IOException: " + e.getMessage());
+                        }
+
+                        actionMode.finish();
+                        return true;
                 }
                 return false;
             }
@@ -223,6 +237,10 @@ public class ScoreListFragment extends ListFragment implements LoaderManager.Loa
                 && savedInstanceState.containsKey(STATE_ACTIVATED_POSITION)) {
             setActivatedPosition(savedInstanceState.getInt(STATE_ACTIVATED_POSITION));
         }
+    }
+
+    private void showMessage(String msg) {
+        Toast.makeText(getActivity(), msg, Toast.LENGTH_LONG).show();
     }
 
     @Override

@@ -131,39 +131,17 @@ public class ScoreListActivity extends FragmentActivity
 
 
     public void exportToJson() {
-        Gson gson = new Gson();
-
-        SimpleDateFormat timeStampFormat = new SimpleDateFormat("yyyyMMdd_HHmmssSS");
-        String filename = timeStampFormat.format(new Date()) + ".json";
-        File file = new File(Environment.getExternalStorageDirectory(), filename);
-
-
-        // gson.toJson();
-        showMessage("saved at " + file.getAbsolutePath());
-        ArrayList<Database.ScoreDto> scoreList = new ArrayList<Database.ScoreDto>();
-
         Database db = getDatabase(this);
-        Cursor cursor = db.retrieveAllForSerialize();
+        File file = null;
         try {
-            if(!cursor.moveToFirst())
-            {
-                showMessage("no score");
+            file = db.exportAllToJson();
+            if(file == null) {
+                showMessage("No score.");
                 return;
             }
-            do {
-                scoreList.add(db.toDto(cursor));
-            }while(cursor.moveToNext());
-        }finally {
-            cursor.close();
-        }
-
-        try {
-            FileWriter writer = new FileWriter(file);
-            // BufferedWriter bw = new BufferedWriter(new FileWriter(file), 8*1024);
-            gson.toJson(scoreList, writer);
-            writer.close();
+            showMessage("saved at " + file.getAbsolutePath());
         } catch (IOException e) {
-            e.printStackTrace();
+            showMessage("IOException: " + e.getMessage());
         }
     }
 

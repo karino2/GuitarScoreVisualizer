@@ -10,8 +10,14 @@ import android.os.Environment;
 import com.google.gson.Gson;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Created by karino on 7/26/13.
@@ -154,6 +160,50 @@ public class Database {
 
     public Cursor retrieveAllForSerialize() {
         return database.query(SCORE_TABLE_NAME, new String[] {"_id", "DATE", "TITLE", "SCORE", "CHORDLIST"}, null, null, null, null, "DATE DESC, _id DESC");
+    }
+
+    private boolean contains(long[] idSet, long testId) {
+        for(long id : idSet) {
+            if(id == testId)
+                return true;
+        }
+        return false;
+    }
+
+    public File exportAllToJson() throws IOException {
+        return exportToJson(null);
+    }
+
+    // if exportIds == null, export all.
+    public File exportToJson(long[] exportIds) throws IOException {
+        Gson gson = new Gson();
+
+        SimpleDateFormat timeStampFormat = new SimpleDateFormat("yyyyMMdd_HHmmssSS");
+        String filename = timeStampFormat.format(new Date()) + ".json";
+        File file = new File(Environment.getExternalStorageDirectory(), filename);
+
+
+        ArrayList<ScoreDto> scoreList = new ArrayList<Database.ScoreDto>();
+
+        Cursor cursor = retrieveAllForSerialize();
+        try {
+            if(!cursor.moveToFirst())
+            {
+                return null;
+            }
+            do {
+                if(exportIds == null || contains(exportIds, cursor.getLong(0)))
+                    scoreList.add(toDto(cursor));
+            }while(cursor.moveToNext());
+        }finally {
+            cursor.close();
+        }
+
+        FileWriter writer = new FileWriter(file);
+        // BufferedWriter bw = new BufferedWriter(new FileWriter(file), 8*1024);
+        gson.toJson(scoreList, writer);
+        writer.close();
+        return file;
     }
 
 

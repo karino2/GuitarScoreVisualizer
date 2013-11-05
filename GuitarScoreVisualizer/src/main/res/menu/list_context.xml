@@ -5,4 +5,7 @@
           android:title="@string/delete_label"
           android:icon="@android:drawable/ic_delete"
           />
+    <item android:id="@+id/list_context_export_item"
+        android:title="@string/action_export"
+        />
 </menu>
