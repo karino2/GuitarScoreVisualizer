@@ -93,8 +93,12 @@ public class ScoreListActivity extends FragmentActivity
 
     private boolean doProcessBack() {
         if(mTwoPane) {
-            return ((ScoreDetailFragment) getSupportFragmentManager()
-                    .findFragmentById(R.id.score_detail_container)).doBackProcess();
+            try {
+                return ((ScoreDetailFragment) getSupportFragmentManager()
+                        .findFragmentById(R.id.score_detail_container)).doBackProcess();
+            }catch(NullPointerException e) {
+                return false;
+            }
         }
         return false;
     }
