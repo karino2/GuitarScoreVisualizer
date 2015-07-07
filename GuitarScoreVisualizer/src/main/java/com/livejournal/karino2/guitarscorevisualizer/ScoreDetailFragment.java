@@ -333,6 +333,7 @@ public class ScoreDetailFragment extends Fragment {
             chordResourceMap.put(new Chord(Chord.BASE_F, Chord.MODIFIER_AUG), R.drawable.chords_faug_0);
             chordResourceMap.put(new Chord(Chord.BASE_F, Chord.MODIFIER_MINORSEVENS), R.drawable.chords_fm7_0);
             chordResourceMap.put(new Chord(Chord.BASE_F, Chord.MODIFIER_MAJORSEVENS), R.drawable.chords_fma7_0);
+            chordResourceMap.put(new Chord(Chord.BASE_F, Chord.MODIFIER_MINORSIX), R.drawable.chords_fm6_0);
             chordResourceMap.put(new Chord(Chord.BASE_F_SHARP, Chord.MODIFIER_MAJOR), R.drawable.chords_fsh_0);
             chordResourceMap.put(new Chord(Chord.BASE_F_SHARP, Chord.MODIFIER_SEVENS), R.drawable.chords_fsh7_0);
             chordResourceMap.put(new Chord(Chord.BASE_F_SHARP, Chord.MODIFIER_MINOR), R.drawable.chords_fshm_0);
@@ -356,6 +357,7 @@ public class ScoreDetailFragment extends Fragment {
             chordResourceMap.put(new Chord(Chord.BASE_G_ON_B, Chord.MODIFIER_MAJOR), R.drawable.chords_g_on_b_0);
             chordResourceMap.put(new Chord(Chord.BASE_A_SHARP_ON_A, Chord.MODIFIER_MAJOR), R.drawable.chords_ash_on_a_0);
             chordResourceMap.put(new Chord(Chord.BASE_A_ON_B, Chord.MODIFIER_MAJOR), R.drawable.chords_a_on_b_0);
+            chordResourceMap.put(new Chord(Chord.BASE_A_ON_CSH, Chord.MODIFIER_MAJOR), R.drawable.chords_a_on_csh_0);
 
 
             alternateChordMap = new HashMap<Chord, List<Chord>>();

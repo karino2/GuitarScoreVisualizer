@@ -128,6 +128,7 @@ public class ScoreParserTest extends TestCase {
         verifyParseOneLine_OneChord("|A+F|", new Chord(Chord.BASE_A_PLUS_F, Chord.MODIFIER_MAJOR));
         verifyParseOneLine_OneChord("|Bb/A|", new Chord(Chord.BASE_A_SHARP_ON_A, Chord.MODIFIER_MAJOR));
         verifyParseOneLine_OneChord("|A#/A|", new Chord(Chord.BASE_A_SHARP_ON_A, Chord.MODIFIER_MAJOR));
+        verifyParseOneLine_OneChord("|A/C#|", new Chord(Chord.BASE_A_ON_CSH, Chord.MODIFIER_MAJOR));
 
     }
 
