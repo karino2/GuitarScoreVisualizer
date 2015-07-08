@@ -34,7 +34,8 @@
         </activity>
         <activity
             android:name="com.livejournal.karino2.guitarscorevisualizer.EditActivity"
-            android:label="@string/title_activity_edit" >
+            android:label="@string/title_activity_edit"
+            android:windowSoftInputMode="adjustResize">
         </activity>
     </application>
 
