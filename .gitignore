@@ -1,2 +1,6 @@
 lib/gson-2.2.4-javadoc.jar
 lib/gson-2.2.4-sources.jar
+.gradle/
+GuitarScoreVisualizer/build/
+build/
+.idea/
