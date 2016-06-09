@@ -53,7 +53,10 @@ public class Chord {
     public static final int BASE_A_SHARP_ON_A = BASE_FRAC_BEGIN+9;
     public static final int BASE_A_ON_B = BASE_FRAC_BEGIN+10;
     public static final int BASE_A_ON_CSH = BASE_FRAC_BEGIN+11;
-    public static final int BASE_FRAC_END = BASE_FRAC_BEGIN+11;
+    public static final int BASE_Am_ON_D = BASE_FRAC_BEGIN+12;
+    public static final int BASE_Em7_ON_G = BASE_FRAC_BEGIN+13;
+    public static final int BASE_Am75_ON_E = BASE_FRAC_BEGIN+14;
+    public static final int BASE_FRAC_END = BASE_FRAC_BEGIN+14;
 
 
 
@@ -61,8 +64,10 @@ public class Chord {
     final static String[] basePatText = { "C", "C#", "Db", "D", "D#", "Eb", "E", "F", "F#", "Gb", "G", "G#", "Ab", "A", "A#", "Bb", "B\\u266d", "B"};
     final static Integer[] patToChordIndexTable = {0, 1, 1, 2, 3, 3, 4, 5, 6, 6, 7, 8, 8, 9, 10, 10, 10, 11};
     final static String[] modPatText =  { "", "m", "m7", "M7", "7", "sus4", "add9", "7sus4", "dim", "aug", "m7-5", "6", "m6", "mM7"};
-    final static String[] fracPatText= {"Cm/G", "G/D", "A\\+F", "C/E", "Am/C", "FM7/C", "G/B", "F#m7/B", "Em7/A", "Bb/A", "B\\u266d/A", "A#/A", "A/B", "A/C#"};
-    final static Integer[] patToFracChordIndexTable = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 9, 9, 10, 11};
+    final static String[] fracPatText= {"Cm/G", "G/D", "A\\+F", "C/E", "Am/C", "FM7/C", "G/B", "F#m7/B", "Em7/A", "Bb/A", "B\\u266d/A", "A#/A", "A/B", "A/C#",
+                                            "Am/D", "Em7/G", "Am7-5/E"};
+    final static Integer[] patToFracChordIndexTable = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 9, 9, 10, 11, 12, 13, 14};
+
 
     public static Chord patIndexToChord(int patIndex) {
         int base = patIndex/MODIFIER_NUM;

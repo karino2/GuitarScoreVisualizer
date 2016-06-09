@@ -358,7 +358,9 @@ public class ScoreDetailFragment extends Fragment {
             chordResourceMap.put(new Chord(Chord.BASE_A_SHARP_ON_A, Chord.MODIFIER_MAJOR), R.drawable.chords_ash_on_a_0);
             chordResourceMap.put(new Chord(Chord.BASE_A_ON_B, Chord.MODIFIER_MAJOR), R.drawable.chords_a_on_b_0);
             chordResourceMap.put(new Chord(Chord.BASE_A_ON_CSH, Chord.MODIFIER_MAJOR), R.drawable.chords_a_on_csh_0);
-
+            chordResourceMap.put(new Chord(Chord.BASE_Am_ON_D, Chord.MODIFIER_MAJOR), R.drawable.chords_am_on_d_0);
+            chordResourceMap.put(new Chord(Chord.BASE_Em7_ON_G, Chord.MODIFIER_MAJOR), R.drawable.chords_em7_on_g_0);
+            chordResourceMap.put(new Chord(Chord.BASE_Am75_ON_E, Chord.MODIFIER_MAJOR), R.drawable.chords_am75_on_e_0);
 
             alternateChordMap = new HashMap<Chord, List<Chord>>();
 

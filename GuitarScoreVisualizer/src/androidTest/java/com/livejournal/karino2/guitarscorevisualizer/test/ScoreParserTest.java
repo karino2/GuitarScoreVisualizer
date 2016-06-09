@@ -1,7 +1,5 @@
 package com.livejournal.karino2.guitarscorevisualizer.test;
 
-import android.util.Log;
-
 import com.livejournal.karino2.guitarscorevisualizer.Chord;
 import com.livejournal.karino2.guitarscorevisualizer.ScoreDetailFragment;
 import com.livejournal.karino2.guitarscorevisualizer.ScoreParser;
@@ -129,6 +127,9 @@ public class ScoreParserTest extends TestCase {
         verifyParseOneLine_OneChord("|Bb/A|", new Chord(Chord.BASE_A_SHARP_ON_A, Chord.MODIFIER_MAJOR));
         verifyParseOneLine_OneChord("|A#/A|", new Chord(Chord.BASE_A_SHARP_ON_A, Chord.MODIFIER_MAJOR));
         verifyParseOneLine_OneChord("|A/C#|", new Chord(Chord.BASE_A_ON_CSH, Chord.MODIFIER_MAJOR));
+        verifyParseOneLine_OneChord("|Am/D|", new Chord(Chord.BASE_Am_ON_D, Chord.MODIFIER_MAJOR));
+        verifyParseOneLine_OneChord("|Em7/G|", new Chord(Chord.BASE_Em7_ON_G, Chord.MODIFIER_MAJOR));
+        verifyParseOneLine_OneChord("|Am7-5/E|", new Chord(Chord.BASE_Am75_ON_E, Chord.MODIFIER_MAJOR));
 
     }
 
