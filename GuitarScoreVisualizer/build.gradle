@@ -1,28 +1,44 @@
 buildscript {
     repositories {
-        mavenCentral()
+        // mavenCentral()
+        jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.1.2'
+        classpath 'com.android.tools.build:gradle:3.2.0'
     }
 }
-apply plugin: 'android'
+apply plugin: 'com.android.application'
 
+/*
 repositories {
     mavenCentral()
 }
+*/
 dependencies {
-    compile 'com.google.code.gson:gson:2.2.4'
-    compile 'com.android.support:support-v4:13.0.+'
+    implementation 'com.google.code.gson:gson:2.2.4'
+    android {
+        compileSdkVersion 28
+        buildToolsVersion '28.0.2'
+
+        defaultConfig {
+            minSdkVersion 16
+            targetSdkVersion 28
+        }
+    }
+    implementation 'com.android.support:support-v4:13.0.+'
 }
 
 
 android {
-    compileSdkVersion 17
-    buildToolsVersion "21.0.0"
+    compileSdkVersion 28
+    buildToolsVersion '28.0.2'
 
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion 16
+        targetSdkVersion 28
+        versionCode=14
+        versionName="0.14"
     }
+
+
 }
