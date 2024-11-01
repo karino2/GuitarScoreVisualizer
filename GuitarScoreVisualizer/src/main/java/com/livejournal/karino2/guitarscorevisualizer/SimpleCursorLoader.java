@@ -2,7 +2,8 @@ package com.livejournal.karino2.guitarscorevisualizer;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.support.v4.content.AsyncTaskLoader;
+
+import androidx.loader.content.AsyncTaskLoader;
 
 abstract class SimpleCursorLoader extends AsyncTaskLoader<Cursor> {
     private Cursor mCursor;

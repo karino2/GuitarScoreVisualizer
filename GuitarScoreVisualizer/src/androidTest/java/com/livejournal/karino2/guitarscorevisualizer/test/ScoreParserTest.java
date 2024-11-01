@@ -17,7 +17,7 @@ public class ScoreParserTest extends TestCase {
         Chord chordOne = new Chord(Chord.BASE_C, Chord.MODIFIER_MAJOR);
         Chord chordTwo = new Chord(Chord.BASE_C, Chord.MODIFIER_MAJOR);
         assertEquals(chordOne, chordTwo);
-        assertTrue(chordOne.equals(chordTwo));
+        assertEquals(chordOne, chordTwo);
         // NG, as expected assertTrue(chordOne == chordTwo);
     }
 

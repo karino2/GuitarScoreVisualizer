@@ -1,44 +1,27 @@
-buildscript {
-    repositories {
-        // mavenCentral()
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:3.2.0'
-    }
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android' version '1.8.22'
 }
-apply plugin: 'com.android.application'
-
-/*
-repositories {
-    mavenCentral()
-}
-*/
-dependencies {
-    implementation 'com.google.code.gson:gson:2.2.4'
-    android {
-        compileSdkVersion 28
-        buildToolsVersion '28.0.2'
-
-        defaultConfig {
-            minSdkVersion 16
-            targetSdkVersion 28
-        }
-    }
-    implementation 'com.android.support:support-v4:13.0.+'
-}
-
 
 android {
-    compileSdkVersion 28
-    buildToolsVersion '28.0.2'
-
+    namespace ="com.livejournal.karino2.guitarscorevisualizer"
+    compileSdk 35
     defaultConfig {
-        minSdkVersion 16
-        targetSdkVersion 28
+        targetSdk 35
+        minSdk 21
         versionCode=14
         versionName="0.14"
     }
-
-
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
 }
+
+dependencies {
+    implementation 'com.google.code.gson:gson:2.10.1'
+    implementation 'androidx.appcompat:appcompat:1.7.0'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'junit:junit:4.13.2'
+}
+
