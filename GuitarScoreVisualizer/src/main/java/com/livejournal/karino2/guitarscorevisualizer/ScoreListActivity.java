@@ -3,10 +3,8 @@ package com.livejournal.karino2.guitarscorevisualizer;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -17,18 +15,16 @@ import androidx.fragment.app.FragmentActivity;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import java.io.BufferedWriter;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.Reader;
 import java.lang.reflect.Type;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 
 
 /**
@@ -51,7 +47,7 @@ public class ScoreListActivity extends FragmentActivity
         implements ScoreListFragment.Callbacks {
 
     final int ACTIVITY_ID_NEW = 1;
-    final int REQUEST_PICK_FILE = 2;
+    final int REQUEST_OPEN_FILE = 2;
 
 
     /**
@@ -122,11 +118,10 @@ public class ScoreListActivity extends FragmentActivity
                 exportToJson();
                 return true;
             case R.id.action_import:
-
-                Intent intent = new Intent();
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                intent.setType("file/*");
-                startActivityForResult(intent, REQUEST_PICK_FILE);
+                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                intent.addCategory(Intent.CATEGORY_OPENABLE);
+                intent.setType("*/*");
+                startActivityForResult(intent, REQUEST_OPEN_FILE);
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -171,17 +166,29 @@ public class ScoreListActivity extends FragmentActivity
         switch(requestCode) {
             case ACTIVITY_ID_NEW:
                 reloadList();
+                super.onActivityResult(requestCode, resultCode, data);
                 return;
-            case REQUEST_PICK_FILE:
+            case REQUEST_OPEN_FILE:
                 if(resultCode == Activity.RESULT_OK) {
-                    String path = data.getData().getPath();
-                    try {
-                        importFromJson(new FileReader(path));
-                        reloadList();
-                    } catch (FileNotFoundException e) {
-                        showMessage("File not found: " + e.getMessage());
+                    if (data != null)
+                    {
+                        Uri uri = data.getData();
+                        if (uri != null)
+                        {
+                            try(InputStream is = getContentResolver().openInputStream(uri);
+                                BufferedReader reader = new BufferedReader(new InputStreamReader(is))) {
+                                importFromJson(reader);
+                                reloadList();
+
+                            }catch (FileNotFoundException e) {
+                                showMessage("File not found: " + e.getMessage());
+                            } catch (IOException e) {
+                                showMessage("IOException: " + e.getMessage());
+                            }
+                        }
                     }
                 }
+                super.onActivityResult(requestCode, resultCode, data);
                 return;
         }
     }
