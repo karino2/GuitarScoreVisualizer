@@ -23,6 +23,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Reader;
 import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -174,29 +175,29 @@ public class ScoreListActivity extends FragmentActivity
             case REQUEST_PICK_FILE:
                 if(resultCode == Activity.RESULT_OK) {
                     String path = data.getData().getPath();
-                    importFromJson(path);
-                    reloadList();
+                    try {
+                        importFromJson(new FileReader(path));
+                        reloadList();
+                    } catch (FileNotFoundException e) {
+                        showMessage("File not found: " + e.getMessage());
+                    }
                 }
                 return;
         }
     }
 
-    private void importFromJson(String path) {
+    private void importFromJson(Reader reader) {
         Gson gson = new Gson();
 
         Type collectionType = new TypeToken<Collection<Database.ScoreDto>>(){}.getType();
 
         Database db = getDatabase(this);
 
-        try {
-            Collection<Database.ScoreDto> col = gson.fromJson(new FileReader(path), collectionType);
-            Database.ScoreDto[] results = col.toArray(new Database.ScoreDto[0]);
-            for(int i = 0; i < results.length; i++) {
-                Database.ScoreDto dto = results[results.length-1-i];
-                db.insertScoreDto(dto);
-            }
-        } catch (FileNotFoundException e) {
-            showMessage("File not found: " + e.getMessage());
+        Collection<Database.ScoreDto> col = gson.fromJson(reader, collectionType);
+        Database.ScoreDto[] results = col.toArray(new Database.ScoreDto[0]);
+        for(int i = 0; i < results.length; i++) {
+            Database.ScoreDto dto = results[results.length-1-i];
+            db.insertScoreDto(dto);
         }
     }
 
