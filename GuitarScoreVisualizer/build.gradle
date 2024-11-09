@@ -9,8 +9,8 @@ android {
     defaultConfig {
         targetSdk 35
         minSdk 21
-        versionCode=14
-        versionName="0.14"
+        versionCode=15
+        versionName="0.15"
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
